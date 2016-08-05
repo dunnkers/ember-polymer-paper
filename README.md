@@ -1,26 +1,56 @@
-# Ember-polymer-paper
+# ember-polymer-paper
 
-This README outlines the details of collaborating on this Ember addon.
+Wraps paper-elements in Ember components so you can use them in Ember easily!
+
+## Requirements
+
+This addon relies on Shadow DOM. If a browser does not have Shadow DOM natively,
+it will be polyfilled.
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+`ember install ember-polymer-paper`
 
-## Running
+## Usage
 
-* `ember serve`
-* Visit your app at http://localhost:4200.
+This addon inject components with names of the paper-elements into your
+application. This means you can just use any of the paper elements using
+doubles curlies, where attributes can bind to an ember object.
 
-## Running Tests
+```html
+{{paper-input value=name}}
+```
 
-* `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+That's it! Good luck using epic paper elements!
 
-## Building
+## Demo
 
-* `ember build`
+[https://dunnkers.github.io/ember-polymer-paper/](https://dunnkers.github.io/ember-polymer-paper/)
 
-For more information on using ember-cli, visit [http://ember-cli.com/](http://ember-cli.com/).
+## Configuration
+
+The addon can be configured in the `config/environment.js` file as such:
+
+```js
+ENV['ember-polymer-paper'] = {
+  option: 'value'
+}
+```
+
+**ElementsToImport**
+
+Determines which paper-elements should be imported and have ember components be
+injected into your application. Defaults to import no elements.
+
+You can import an elements as such:
+
+```js
+  ElementsToImport: {
+    'paper-button': true
+  }
+```
+
+## About
+
+This addon was sponsored by [Fabriquartz](http://www.fabriquartz.com/), a startup
+based in The Netherlands.

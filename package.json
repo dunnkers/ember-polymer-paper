@@ -1,7 +1,7 @@
 {
   "name": "ember-polymer-paper",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Integrates paper-elements with Ember using ember-polymer.",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -11,11 +11,18 @@
     "start": "ember server",
     "test": "ember try:each"
   },
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "https://www.github.com/dunnkers/ember-polymer-paper.git"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": {
+    "name": "Jeroen Overschie",
+    "email": "info@periodpoint.com",
+    "url": "https://www.github.com/dunnkers"
+  },
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
@@ -23,7 +30,7 @@
     "ember-cli": "2.7.0",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-dependency-checker": "^1.2.0",
-    "ember-cli-htmlbars": "^1.0.3",
+    "ember-cli-htmlbars": "1.0.10",
     "ember-cli-htmlbars-inline-precompile": "^0.3.1",
     "ember-cli-inject-live-reload": "^1.4.0",
     "ember-cli-jshint": "^1.0.0",
@@ -37,14 +44,21 @@
     "ember-export-application-global": "^1.0.5",
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
-    "ember-welcome-page": "^1.0.1",
     "loader.js": "^4.0.1"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "polymer",
+    "web components",
+    "custom elements",
+    "paper",
+    "material",
+    "design"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.1.6"
+    "ember-cli-babel": "^5.1.6",
+    "ember-cli-htmlbars": "^1.0.10",
+    "ember-polymer": "^0.1.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
