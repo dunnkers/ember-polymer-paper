@@ -1,6 +1,7 @@
 {
   "name": "ember-polymer-paper",
   "version": "0.0.0",
+  "demoURL": "https://dunnkers.github.io/ember-polymer-paper/",
   "description": "Integrates paper-elements with Ember using ember-polymer.",
   "directories": {
     "doc": "doc",
