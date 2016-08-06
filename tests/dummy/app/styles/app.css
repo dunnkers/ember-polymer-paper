@@ -1,0 +1,15 @@
+body {
+  font-family: "Roboto", "Noto", sans-serif;
+}
+
+.outlet {
+  padding: 30px;
+}
+
+section {
+  margin: 20px 0;
+}
+
+section > p {
+  margin-left: 30px;
+}

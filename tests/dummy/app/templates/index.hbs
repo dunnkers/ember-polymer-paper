@@ -1,0 +1,128 @@
+<section>
+  <h3>Normal paper-input</h3>
+  <p>
+    {{paper-input value=name label="Name"}}
+    Your name is: {{name}}
+  </p>
+</section>
+<section>
+  <h3>paper-checkbox</h3>
+  <p>
+    {{#paper-checkbox checked=checkboxChecked}}
+      I feel good
+    {{/paper-checkbox}}
+    <p>
+      {{#if checkboxChecked}}
+        😎 &nbsp; you feel good!
+      {{else}}
+        😅 &nbsp; you feel .. how?
+      {{/if}}
+    </p>
+  </p>
+</section>
+<section>
+  <h3>paper-radio-group with paper-radio-button's</h3>
+  <p>
+    {{#paper-radio-group selected=checkedRadioButton}}
+      {{#paper-radio-button name="small"}}
+        Small
+      {{/paper-radio-button}}
+      {{#paper-radio-button name="medium"}}
+        Medium
+      {{/paper-radio-button}}
+      {{#paper-radio-button name="large"}}
+        Large
+      {{/paper-radio-button}}
+    {{/paper-radio-group}}
+    <p>
+      Selected: {{checkedRadioButton}}
+    </p>
+  </p>
+</section>
+<section>
+  <h3>number input (paper-input)</h3>
+  <p>
+    {{paper-input value=theNumber type="number" label="Enter a number"}}
+    <p>Number = {{theNumber}}</p>
+  </p>
+</section>
+<section>
+  <h3>date input (paper-input)</h3>
+  <p>
+    {{paper-input value=theDate type="date" label="Give in a date"}}
+    <p>Date = {{theDate}}</p>
+  </p>
+</section>
+<section>
+  <h3>time input (paper-input)</h3>
+  <p>
+    {{paper-input value=theTime type="time" label="Give in a time"}}
+    <p>Time = {{theTime}}</p>
+  </p>
+</section>
+<section>
+  <h3>color input (paper-input)</h3>
+  <p>
+    {{paper-input value=theColor type="color" label="Give in a color"}}
+    <p>Color = {{theColor}}</p>
+  </p>
+</section>
+<section>
+  <h3>email input (paper-input)</h3>
+  <p>
+    {{paper-input value=theEmail type="email" label="Give in a email"}}
+    <p>Email = {{theEmail}}</p>
+  </p>
+</section>
+<section>
+  <h3>month input (paper-input)</h3>
+  <p>
+    {{paper-input value=theMonth type="month" label="Give in a month"}}
+    <p>Month = {{theMonth}}</p>
+  </p>
+</section>
+<section>
+  <h3>week input (paper-input)</h3>
+  <p>
+    {{paper-input value=theWeek type="week" label="Select a week"}}
+    <p>Week = {{theWeek}}</p>
+  </p>
+</section>
+<section>
+  <h3>tel input (paper-input)</h3>
+  <p>
+    {{paper-input value=theTel type="tel" label="Select a telephone number"}}
+    <p>Phone number = {{theTel}}</p>
+  </p>
+</section>
+<section>
+  <h3>file input (paper-input)</h3>
+  <p>
+    {{paper-input value=theFile type="file" label="Select a file"}}
+    <p>File = {{theFile}}</p>
+  </p>
+</section>
+<section>
+  <h3>password input (paper-input)</h3>
+  <p>
+    {{paper-input value=thePassword type="password" label="Type your password"}}
+    <p>Password = {{thePassword}}</p>
+  </p>
+</section>
+<section>
+  <h3>search input (paper-input)</h3>
+  <p>
+    {{paper-input value=theSearchQuery type="search" label="Do a search"}}
+    <p>Search query = {{theSearchQuery}}</p>
+  </p>
+</section>
+<section>
+  <h3>paper-textarea</h3>
+  <p>
+    {{paper-input tagName="paper-textarea" label="This is a multiline textarea!"
+                  value=myTextArea}}
+    <p>
+      {{myTextArea}}
+    </p>
+  </p>
+</section>

@@ -1,4 +1,4 @@
-# ember-polymer-paper
+# ember-polymer-paper [![Build Status](https://travis-ci.org/dunnkers/ember-polymer-paper.svg?branch=master)](https://travis-ci.org/dunnkers/ember-polymer-paper)
 
 Wraps paper-elements in Ember components so you can use them in Ember easily!
 
