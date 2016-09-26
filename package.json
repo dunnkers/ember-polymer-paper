@@ -60,7 +60,7 @@
   "dependencies": {
     "ember-cli-babel": "^5.1.6",
     "ember-cli-htmlbars": "^1.0.10",
-    "ember-polymer": "^0.1.0"
+    "ember-polymer": "^0.2.3"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

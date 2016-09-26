@@ -2,8 +2,5 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-polymer-paper',
-  isDevelopingAddon: function() {
-    return true;
-  }
+  name: 'ember-polymer-paper'
 };
