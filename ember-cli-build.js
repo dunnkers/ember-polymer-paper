@@ -4,10 +4,12 @@ var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 var path = require('path');
 
 module.exports = function(defaults) {
+  var appDir = path.join('tests', 'dummy', 'app');
   var app = new EmberAddon(defaults, {
     'ember-polymer': {
-      htmlImportsFile: path.join('tests', 'dummy', 'app', 'elements.html')
-    }
+      htmlImportsFile: path.join(appDir, 'elements.html')
+    },
+    'snippetPaths': [ path.join(appDir, 'templates', 'snippets') ]
   });
 
   /*
