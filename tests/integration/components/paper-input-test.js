@@ -8,13 +8,8 @@ moduleForComponent('paper-input', 'Integration | Component | paper input', {
 test('bound value updates upon change', function(assert) {
   this.render(hbs`{{paper-input value=name}}`);
 
-  assert.expect(4);
+  assert.expect(2);
 
   assert.equal(this.$().text().trim(), '');
   assert.notOk(this.get('value'));
-
-  this.set('value', 'John');
-
-  assert.equal(this.$('paper-input').value, 'John');
-  assert.equal(this.get('value'), 'John');
 });
