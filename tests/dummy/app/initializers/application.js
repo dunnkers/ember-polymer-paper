@@ -24,7 +24,9 @@ import Ember from 'ember';
 
 export default {
   name: 'inject-custom-elements-as-components',
-  initialize: function(application) {
+  initialize: function() {
+  },
+  doNotInitialize: function(application) {
     Ember.Logger.debug('hello!');
 
     // we are using web components polyfill.
