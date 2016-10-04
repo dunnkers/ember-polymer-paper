@@ -1,0 +1,11 @@
+{{#paper-checkbox checked=hasDriverLicense}}
+I have a drivers license
+{{/paper-checkbox}}
+
+<p>
+  {{#if hasDriverLicense}}
+    You have a drivers license 🚗
+  {{else}}
+    You do not have a drivers license 🚧
+  {{/if}}
+</p>
