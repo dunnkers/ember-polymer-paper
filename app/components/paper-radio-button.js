@@ -1,1 +1,0 @@
-export { default } from 'ember-polymer-paper/components/paper-radio-button';

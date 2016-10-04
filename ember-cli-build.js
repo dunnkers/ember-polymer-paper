@@ -9,7 +9,7 @@ module.exports = function(defaults) {
     'ember-polymer': {
       htmlImportsFile: path.join(appDir, 'elements.html')
     },
-    'snippetPaths': [ path.join(appDir, 'templates', 'snippets') ]
+    'snippetPaths': [ path.join(appDir, 'templates', 'components') ]
   });
 
   /*

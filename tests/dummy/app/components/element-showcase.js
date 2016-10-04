@@ -1,10 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  snippet: Ember.computed('name', function() {
-    return `${this.get('name')}.hbs`;
+  snippetFile: Ember.computed('name', function() {
+    return `${this.get('name')}-snippet.hbs`;
   }),
-  templateName: Ember.computed('name', function() {
-    return `snippets/${this.get('name')}`;
+  componentName: Ember.computed('name', function() {
+    return `${this.get('name')}-snippet`;
   })
 });

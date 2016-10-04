@@ -27,11 +27,30 @@ export default {
   initialize: function(application) {
     Ember.Logger.debug('hello!');
 
-    // do this only when window.Polymer.telemetry does not exist (it was polyfilled)
-    window.addEventListener('WebComponentsReady', function() {
-      console.log('web components are ready.');
-      // let PaperButton = application.resolveRegistration('component:paper-button');
-    });
+    // we are using web components polyfill.
+    if (!window.Polymer.telemetry) {
+      let elementTagName = 'paper-input';
+      let Component = Ember.TextField.extend({
+        tagName: elementTagName
+      });
+      application.register(`component:${elementTagName}`, Component);
+
+      window.addEventListener('WebComponentsReady', function() {
+        console.log('web components are ready.');
+
+        console.log('attaching attribute bindings to registered components.');
+        let PaperInput = application.resolveRegistration('component:paper-input');
+
+        PaperInput.reopenClass({
+          attributeBindings: ['label', 'type', 'error-message', 'invalid',
+            'auto-validate', 'required', 'tabindex']
+        });
+        // debugger;
+        // let PaperButton = application.resolveRegistration('component:paper-button');
+      });
+
+      return;
+  }
 
     // register all registered Polymer elements
     let registrations = window.Polymer.telemetry.registrations;
@@ -41,17 +60,18 @@ export default {
         continue;
       }
 
-      let elementsNotToRegister = [ 'paper-input', 'paper-radio-button',
-                                    'paper-radio-group', 'paper-checkbox' ];
+      // let elementsNotToRegister = [ 'paper-input', 'paper-radio-button',
+      //                               'paper-radio-group', 'paper-checkbox' ];
+      let elementsNotToRegister = [];
       let elementTagName = Element.is;
       if (elementsNotToRegister.includes(elementTagName)) {
         continue;
       }
 
-      let properties = Element._propertyInfo;
-      let attributeBindings = [];
 
+      let properties = Element._propertyInfo;
       let parentComponent = Ember.Component;
+
       if (properties.checked && !properties.checked.readOnly) {
         console.log(elementTagName, 'was treated as Checkbox.');
         parentComponent = Ember.Checkbox;
@@ -60,6 +80,7 @@ export default {
         parentComponent = Ember.TextField;
       }
 
+      let attributeBindings = [];
       for (let key in properties) {
         let obj = properties[key];
         if (obj.type === Object || obj.readOnly) {
