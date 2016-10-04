@@ -1,0 +1,1 @@
+export { default } from 'ember-polymer-paper/components/paper-slider';
