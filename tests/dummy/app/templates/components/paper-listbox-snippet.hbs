@@ -1,0 +1,23 @@
+Block usage:
+{{#paper-listbox items selectedItem=blockSelected as |item|}}
+  <paper-item>{{item}}</paper-item>
+{{/paper-listbox}}
+<p>
+  Selected = {{blockSelected}}
+</p>
+
+Non block usage:
+{{paper-listbox items selectedItem=nonBlockSelected}}
+<p>
+  Selected = {{nonBlockSelected}}
+</p>
+
+Without a positional param:
+{{#paper-listbox selectedItem=noPositionalSelected}}
+  <paper-item>Item 1</paper-item>
+  <paper-item>Item 2</paper-item>
+  <paper-item>Item 3</paper-item>
+{{/paper-listbox}}
+<p>
+  Selected = {{noPositionalSelected}}
+</p>

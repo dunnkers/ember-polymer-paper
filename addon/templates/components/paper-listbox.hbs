@@ -1,0 +1,11 @@
+{{#if items}}
+  {{#each items as |item|}}
+    {{#if hasBlock}}
+      {{yield item}}
+    {{else}}
+      <paper-item>{{item}}</paper-item>
+    {{/if}}
+  {{/each}}
+{{else}}
+  {{yield}}
+{{/if}}
