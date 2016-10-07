@@ -1,0 +1,24 @@
+<p>
+  Using ordinary content.
+</p>
+{{#paper-dropdown-menu label="What do you want for dinner?" selectedItem=dinner}}
+  <paper-listbox class="dropdown-content">
+    <paper-item>Soup</paper-item>
+    <paper-item>Meat</paper-item>
+    <paper-item>Sandwich</paper-item>
+  </paper-listbox>
+{{/paper-dropdown-menu}}
+<p>
+  Dinner: {{dinner}}
+</p>
+
+<p>
+  Using a paper-listbox.
+</p>
+{{#paper-dropdown-menu label="Your favourite pastry"}}
+  {{paper-listbox pastries selectedItem=pastry class="dropdown-content"}}
+{{/paper-dropdown-menu}}
+
+<p>
+  Your favourite pastry is: {{pastry}}
+</p>
