@@ -1,19 +1,5 @@
 <p>
-  Using ordinary content.
-</p>
-{{#paper-dropdown-menu label="What do you want for dinner?" selectedItem=dinner}}
-  <paper-listbox class="dropdown-content">
-    <paper-item>Soup</paper-item>
-    <paper-item>Meat</paper-item>
-    <paper-item>Sandwich</paper-item>
-  </paper-listbox>
-{{/paper-dropdown-menu}}
-<p>
-  Dinner: {{dinner}}
-</p>
-
-<p>
-  Using a paper-listbox.
+  Most commonly we use it in combination with a paper-listbox.
 </p>
 {{#paper-dropdown-menu label="Your favourite pastry"}}
   {{paper-listbox pastries selectedItem=pastry class="dropdown-content"}}
@@ -21,4 +7,19 @@
 
 <p>
   Your favourite pastry is: {{pastry}}
+</p>
+
+<p>
+  But we can use any element that behaves like a iron-selector:
+</p>
+
+{{#paper-dropdown-menu label="Choose one dinosaur" selectedItem=dinosaur}}
+  <paper-radio-group class="dropdown-content">
+    <paper-radio-button name="a">allosaurus</paper-radio-button>
+    <paper-radio-button name="b">brontosaurus</paper-radio-button>
+    <paper-radio-button name="d">diplodocus</paper-radio-button>
+  </paper-radio-group>
+{{/paper-dropdown-menu}}
+<p>
+  Dinosaur: {{dinosaur}}
 </p>

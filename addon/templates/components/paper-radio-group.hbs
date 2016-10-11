@@ -1,0 +1,13 @@
+{{#if items}}
+  {{#each items as |item|}}
+    {{#if hasBlock}}
+      {{yield item}}
+    {{else}}
+      {{#paper-radio-button name=item}}
+        {{item}}
+      {{/paper-radio-button}}
+    {{/if}}
+  {{/each}}
+{{else}}
+  {{yield}}
+{{/if}}
