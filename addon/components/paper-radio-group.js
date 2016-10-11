@@ -1,7 +1,7 @@
-import PaperListbox from './paper-listbox';
+import IronSelector from './iron-selector';
 import layout from '../templates/components/paper-radio-group';
 
-export default PaperListbox.extend({
+export default IronSelector.extend({
   layout,
   tagName: 'paper-radio-group'
 });
