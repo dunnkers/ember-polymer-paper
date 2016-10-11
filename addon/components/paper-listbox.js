@@ -14,7 +14,13 @@ let PaperListbox = Ember.Component.extend({
 
     this.$().on('iron-select', function() {
       let items = component.get('items');
-      let selectedItem = items ? items[this.selected] : this.selected;
+      let selectedItem = this.selected;
+
+      if (items) {
+        selectedItem = typeof this.selected === "number" ?
+          items[this.selected] : items[this.indexOf(this.selectedItem)];
+      }
+      
       component.set('selectedItem', selectedItem);
     });
   }
