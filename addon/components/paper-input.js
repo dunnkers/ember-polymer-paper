@@ -39,11 +39,17 @@ export default Ember.TextField.extend({
     // 'accept',
     // 'multiple'
 
-    'label'
+    'label',
+    'char-counter',
+    'auto-validate',
+    'error-message'
   ],
 
-  input() {
-    let newValue = document.querySelector('#' + this.elementId).value;
-    this.set('value', newValue);
+  input(event) {
+    if (this.attrs.update && typeof this.attrs.update === 'function') {
+      this.attrs.update(this.get('value'));
+    } else {
+      this.set('value', event.target.value);
+    }
   }
 });
