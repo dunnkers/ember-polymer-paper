@@ -17,7 +17,7 @@
     "url": "https://www.github.com/dunnkers/ember-polymer-paper.git"
   },
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 4.0.0"
   },
   "author": {
     "name": "Jeroen Overschie",
@@ -59,7 +59,7 @@
     "design"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.1.6",
+    "ember-cli-babel": "^5.1.10",
     "ember-cli-htmlbars": "^1.0.10",
     "ember-polymer": "^0.2.3"
   },
