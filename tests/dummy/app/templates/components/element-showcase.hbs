@@ -1,7 +1,9 @@
-<section>
-  <h3>{{name}}</h3>
-  <span secondary>{{yield}}</span>
+{{#each snippets as |snippet|}}
+  <section>
+    <h3>{{snippet.name}}</h3>
+    <span secondary>{{yield}}</span>
 
-  {{component componentName}}
-  {{code-snippet name=snippetFile}}
-</section>
+    {{component (concat 'snippets/' snippet.snippetName)}}
+    {{code-snippet name=snippet.filename}}
+  </section>
+{{/each}}

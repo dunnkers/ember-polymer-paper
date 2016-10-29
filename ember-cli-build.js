@@ -7,9 +7,12 @@ module.exports = function(defaults) {
   var appDir = path.join('tests', 'dummy', 'app');
   var app = new EmberAddon(defaults, {
     'ember-polymer': {
-      htmlImportsFile: path.join(appDir, 'elements.html')
+      htmlImportsFile: path.join(appDir, 'elements.html'),
+      vulcanizeOptions: {
+        stripExcludes: ['.*paper-styles\.html.*']
+      }
     },
-    'snippetPaths': [ path.join(appDir, 'templates', 'components') ]
+    'snippetPaths': [ path.join(appDir, 'templates', 'components', 'snippets') ]
   });
 
   /*
