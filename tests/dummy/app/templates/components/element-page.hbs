@@ -1,7 +1,24 @@
 <section>
-  <h1>{{snippet.name}}</h1>
+  <h1>
+    {{snippet.name}}
+    <span>
+      <a href={{concat
+                  "https://elements.polymer-project.org/elements/"
+                  snippet.name}}
+         target="_tab"
+         title={{concat snippet.name " polymer element reference"}}
+         >
+        <img src="https://elements.polymer-project.org/images/polymer.svg"
+             alt="Polymer logo"
+             class="polymer-logo"/>
+      </a>
+    </span>
+  </h1>
   <span secondary>{{yield}}</span>
 
-  {{component (concat 'snippets/' snippet.snippetName)}}
+  <div class="component-example">
+    {{component (concat 'snippets/' snippet.snippetName)}}
+  </div>
+
   {{code-snippet name=snippet.filename}}
 </section>

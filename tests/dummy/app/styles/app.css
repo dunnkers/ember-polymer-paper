@@ -23,3 +23,16 @@ paper-listbox a, paper-menu a {
 paper-listbox a.active paper-item, paper-menu a.active paper-item {
   font-weight: bold;
 }
+
+.component-example {
+  border: 1px solid #666;
+  padding: 20px;
+}
+
+.polymer-logo {
+  width: 32px;
+  height: 32px;
+  position: relative;
+  top: 8px;
+  left: 10px;
+}
