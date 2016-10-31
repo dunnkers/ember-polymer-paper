@@ -696,7 +696,7 @@ default:
 return value != null ? value : undefined;
 }
 }
-});Polymer.version = "1.6.1";Polymer.Base._addFeature({
+});Polymer.version = "1.7.0";Polymer.Base._addFeature({
 _registerFeatures: function () {
 this._prepIs();
 this._prepBehaviors();
@@ -3004,6 +3004,9 @@ var next = node.nextSibling;
 if (node.localName === 'template' && !node.hasAttribute('preserve-content')) {
 this._parseTemplate(node, i, list, annote);
 }
+if (node.localName == 'slot') {
+node = this._replaceSlotWithContent(node);
+}
 if (node.nodeType === Node.TEXT_NODE) {
 var n = next;
 while (n && n.nodeType === Node.TEXT_NODE) {
@@ -3028,6 +3031,22 @@ node = next;
 i++;
 }
 }
+},
+_replaceSlotWithContent: function (slot) {
+var content = slot.ownerDocument.createElement('content');
+while (slot.firstChild) {
+content.appendChild(slot.firstChild);
+}
+var attrs = slot.attributes;
+for (var i = 0; i < attrs.length; i++) {
+var attr = attrs[i];
+content.setAttribute(attr.name, attr.value);
+}
+var name = slot.getAttribute('name');
+var select = name ? '[slot=\'' + name + '\']' : ':not([slot])';
+content.setAttribute('select', select);
+slot.parentNode.replaceChild(content, slot);
+return content;
 },
 _parseTemplate: function (node, index, list, parent) {
 var content = document.createDocumentFragment();
@@ -3162,7 +3181,30 @@ resolveCss: resolveCss,
 resolveAttrs: resolveAttrs,
 resolveUrl: resolveUrl
 };
-}());Polymer.Base._addFeature({
+}());Polymer.Path = {
+root: function (path) {
+var dotIndex = path.indexOf('.');
+if (dotIndex === -1) {
+return path;
+}
+return path.slice(0, dotIndex);
+},
+isDeep: function (path) {
+return path.indexOf('.') !== -1;
+},
+isAncestor: function (base, path) {
+return base.indexOf(path + '.') === 0;
+},
+isDescendant: function (base, path) {
+return path.indexOf(base + '.') === 0;
+},
+translate: function (base, newBase, path) {
+return newBase + path.slice(base.length);
+},
+matches: function (base, wildcard, path) {
+return base === path || this.isAncestor(base, path) || Boolean(wildcard) && this.isDescendant(base, path);
+}
+};Polymer.Base._addFeature({
 _prepAnnotations: function () {
 if (!this._template) {
 this._notes = [];
@@ -3192,7 +3234,7 @@ var signature = this._parseMethod(p.value);
 if (signature) {
 p.signature = signature;
 } else {
-p.model = this._modelForPath(p.value);
+p.model = Polymer.Path.root(p.value);
 }
 }
 }
@@ -3455,8 +3497,9 @@ mouseEvent.stopPropagation();
 }
 };
 function setupTeardownMouseCanceller(setup) {
-for (var i = 0, en; i < MOUSE_EVENTS.length; i++) {
-en = MOUSE_EVENTS[i];
+var events = IS_TOUCH_ONLY ? ['click'] : MOUSE_EVENTS;
+for (var i = 0, en; i < events.length; i++) {
+en = events[i];
 if (setup) {
 document.addEventListener(en, mouseCanceller, true);
 } else {
@@ -3465,9 +3508,6 @@ document.removeEventListener(en, mouseCanceller, true);
 }
 }
 function ignoreMouse() {
-if (IS_TOUCH_ONLY) {
-return;
-}
 if (!POINTERSTATE.mouse.mouseIgnoreJob) {
 setupTeardownMouseCanceller(true);
 }
@@ -3660,7 +3700,7 @@ node[GESTURE_KEY] = gobj = {};
 }
 for (var i = 0, dep, gd; i < deps.length; i++) {
 dep = deps[i];
-if (IS_TOUCH_ONLY && MOUSE_EVENTS.indexOf(dep) > -1) {
+if (IS_TOUCH_ONLY && MOUSE_EVENTS.indexOf(dep) > -1 && dep !== 'click') {
 continue;
 }
 gd = gobj[dep];
@@ -4319,7 +4359,7 @@ fx.fn.call(this, property, this[property], fx.effect, old, fromAbove);
 },
 _clearPath: function (path) {
 for (var prop in this.__data__) {
-if (prop.indexOf(path + '.') === 0) {
+if (Polymer.Path.isDescendant(path, prop)) {
 this.__data__[prop] = undefined;
 }
 }
@@ -4396,7 +4436,7 @@ _addAnnotatedListener: function (model, index, property, path, event, negated) {
 if (!model._bindListeners) {
 model._bindListeners = [];
 }
-var fn = this._notedListenerFactory(property, path, this._isStructured(path), negated);
+var fn = this._notedListenerFactory(property, path, Polymer.Path.isDeep(path), negated);
 var eventName = event || Polymer.CaseMap.camelToDashCase(property) + '-changed';
 model._bindListeners.push({
 index: index,
@@ -4406,16 +4446,14 @@ changedFn: fn,
 event: eventName
 });
 },
-_isStructured: function (path) {
-return path.indexOf('.') > 0;
-},
 _isEventBogus: function (e, target) {
 return e.path && e.path[0] !== target;
 },
 _notedListenerFactory: function (property, path, isStructured, negated) {
 return function (target, value, targetPath) {
 if (targetPath) {
-this._notifyPath(this._fixPath(path, property, targetPath), value);
+var newPath = Polymer.Path.translate(property, path, targetPath);
+this._notifyPath(newPath, value);
 } else {
 value = target[property];
 if (negated) {
@@ -4537,7 +4575,7 @@ if (bailoutEarly && v === undefined) {
 return;
 }
 if (arg.wildcard) {
-var matches = path.indexOf(name + '.') === 0;
+var matches = Polymer.Path.isAncestor(path, name);
 values[i] = {
 path: matches ? path : name,
 value: matches ? value : v,
@@ -4764,8 +4802,8 @@ a.literal = true;
 break;
 }
 if (!a.literal) {
-a.model = this._modelForPath(arg);
-a.structured = arg.indexOf('.') > 0;
+a.model = Polymer.Path.root(arg);
+a.structured = Polymer.Path.isDeep(arg);
 if (a.structured) {
 a.wildcard = arg.slice(-2) == '.*';
 if (a.wildcard) {
@@ -4955,6 +4993,7 @@ this._handlers = [];
 });
 }());(function () {
 'use strict';
+var Path = Polymer.Path;
 Polymer.Base._addFeature({
 notifyPath: function (path, value, fromAbove) {
 var info = {};
@@ -5062,7 +5101,7 @@ info.path = parts.join('.');
 return prop;
 },
 _pathEffector: function (path, value) {
-var model = this._modelForPath(path);
+var model = Path.root(path);
 var fx$ = this._propertyEffects && this._propertyEffects[model];
 if (fx$) {
 for (var i = 0, fx; i < fx$.length && (fx = fx$[i]); i++) {
@@ -5077,34 +5116,30 @@ this._notifyBoundPaths(path, value);
 }
 },
 _annotationPathEffect: function (path, value, effect) {
-if (effect.value === path || effect.value.indexOf(path + '.') === 0) {
+if (Path.matches(effect.value, false, path)) {
 Polymer.Bind._annotationEffect.call(this, path, value, effect);
-} else if (path.indexOf(effect.value + '.') === 0 && !effect.negate) {
+} else if (!effect.negate && Path.isDescendant(effect.value, path)) {
 var node = this._nodes[effect.index];
 if (node && node._notifyPath) {
-var p = this._fixPath(effect.name, effect.value, path);
-node._notifyPath(p, value, true);
+var newPath = Path.translate(effect.value, effect.name, path);
+node._notifyPath(newPath, value, true);
 }
 }
 },
 _complexObserverPathEffect: function (path, value, effect) {
-if (this._pathMatchesEffect(path, effect)) {
+if (Path.matches(effect.trigger.name, effect.trigger.wildcard, path)) {
 Polymer.Bind._complexObserverEffect.call(this, path, value, effect);
 }
 },
 _computePathEffect: function (path, value, effect) {
-if (this._pathMatchesEffect(path, effect)) {
+if (Path.matches(effect.trigger.name, effect.trigger.wildcard, path)) {
 Polymer.Bind._computeEffect.call(this, path, value, effect);
 }
 },
 _annotatedComputationPathEffect: function (path, value, effect) {
-if (this._pathMatchesEffect(path, effect)) {
+if (Path.matches(effect.trigger.name, effect.trigger.wildcard, path)) {
 Polymer.Bind._annotatedComputationEffect.call(this, path, value, effect);
 }
-},
-_pathMatchesEffect: function (path, effect) {
-var effectArg = effect.trigger.name;
-return effectArg == path || effectArg.indexOf(path + '.') === 0 || effect.trigger.wildcard && path.indexOf(effectArg + '.') === 0;
 },
 linkPaths: function (to, from) {
 this._boundPaths = this._boundPaths || {};
@@ -5122,18 +5157,15 @@ delete this._boundPaths[path];
 _notifyBoundPaths: function (path, value) {
 for (var a in this._boundPaths) {
 var b = this._boundPaths[a];
-if (path.indexOf(a + '.') == 0) {
-this._notifyPath(this._fixPath(b, a, path), value);
-} else if (path.indexOf(b + '.') == 0) {
-this._notifyPath(this._fixPath(a, b, path), value);
+if (Path.isDescendant(a, path)) {
+this._notifyPath(Path.translate(a, b, path), value);
+} else if (Path.isDescendant(b, path)) {
+this._notifyPath(Path.translate(b, a, path), value);
 }
 }
-},
-_fixPath: function (property, root, path) {
-return property + path.slice(root.length);
 },
 _notifyPathUp: function (path, value) {
-var rootName = this._modelForPath(path);
+var rootName = Path.root(path);
 var dashCaseName = Polymer.CaseMap.camelToDashCase(rootName);
 var eventName = dashCaseName + this._EVENT_CHANGED;
 this.fire(eventName, {
@@ -5143,10 +5175,6 @@ value: value
 bubbles: false,
 _useCache: true
 });
-},
-_modelForPath: function (path) {
-var dot = path.indexOf('.');
-return dot < 0 ? path : path.slice(0, dot);
 },
 _EVENT_CHANGED: '-changed',
 notifySplices: function (path, splices) {
@@ -5253,8 +5281,6 @@ _annotationPathEffect: Polymer.Base._annotationPathEffect,
 _complexObserverPathEffect: Polymer.Base._complexObserverPathEffect,
 _annotatedComputationPathEffect: Polymer.Base._annotatedComputationPathEffect,
 _computePathEffect: Polymer.Base._computePathEffect,
-_modelForPath: Polymer.Base._modelForPath,
-_pathMatchesEffect: Polymer.Base._pathMatchesEffect,
 _notifyBoundPaths: Polymer.Base._notifyBoundPaths,
 _getPathParts: Polymer.Base._getPathParts
 });
@@ -5548,7 +5574,9 @@ var e$ = Polymer.TreeApi.arrayCopy(content.querySelectorAll(this.MODULE_STYLES_S
 for (var i = 0, e; i < e$.length; i++) {
 e = e$[i];
 if (e.localName === 'template') {
+if (!e.hasAttribute('preserve-content')) {
 cssText += this.cssFromElement(e);
+}
 } else {
 if (e.localName === 'style') {
 var include = e.getAttribute(this.INCLUDE_ATTR);
@@ -5675,9 +5703,21 @@ elementStyles: function (element, callback) {
 var styles = element._styles;
 var cssText = '';
 var cssBuildType = element.__cssBuild;
+var passthrough = settings.useNativeShadow || cssBuildType === 'shady';
+var cb;
+if (passthrough) {
+var self = this;
+cb = function (rule) {
+rule.selector = self._slottedToContent(rule.selector);
+rule.selector = rule.selector.replace(ROOT, ':host > *');
+if (callback) {
+callback(rule);
+}
+};
+}
 for (var i = 0, l = styles.length, s; i < l && (s = styles[i]); i++) {
 var rules = styleUtil.rulesForStyle(s);
-cssText += settings.useNativeShadow || cssBuildType === 'shady' ? styleUtil.toCssText(rules, callback) : this.css(rules, element.is, element.extends, callback, element._scopeCssViaAttr) + '\n\n';
+cssText += passthrough ? styleUtil.toCssText(rules, cb) : this.css(rules, element.is, element.extends, callback, element._scopeCssViaAttr) + '\n\n';
 }
 return cssText.trim();
 },
@@ -5725,6 +5765,8 @@ var stop = false;
 var hostContext = false;
 var self = this;
 selector = selector.trim();
+selector = this._slottedToContent(selector);
+selector = selector.replace(ROOT, ':host > *');
 selector = selector.replace(CONTENT_START, HOST + ' $1');
 selector = selector.replace(SIMPLE_SELECTOR_SEP, function (m, c, s) {
 if (!stop) {
@@ -5803,12 +5845,13 @@ this._transformRule(rule, this._transformDocumentSelector);
 }
 },
 normalizeRootSelector: function (rule) {
-if (rule.selector === ROOT) {
-rule.selector = 'html';
-}
+rule.selector = rule.selector.replace(ROOT, 'html');
 },
 _transformDocumentSelector: function (selector) {
 return selector.match(SCOPE_JUMP) ? this._transformComplexSelector(selector, SCOPE_DOC_SELECTOR) : this._transformSimpleSelector(selector.trim(), SCOPE_DOC_SELECTOR);
+},
+_slottedToContent: function (cssText) {
+return cssText.replace(SLOTTED_PAREN, CONTENT + '> $1');
 },
 SCOPE_NAME: 'style-scope'
 };
@@ -5831,6 +5874,7 @@ var PSEUDO_PREFIX = ':';
 var CLASS = 'class';
 var CONTENT_START = new RegExp('^(' + CONTENT + ')');
 var SELECTOR_NO_MATCH = 'should_not_match';
+var SLOTTED_PAREN = /(?:::slotted)(?:\(((?:\([^)(]*\)|[^)(]*)+?)\))/g;
 return api;
 }();Polymer.StyleExtends = function () {
 var styleUtil = Polymer.StyleUtil;
@@ -6008,7 +6052,7 @@ prefix = matchText + ';' + prefix;
 return prefix + out.join('; ') + ';';
 }
 function fixVars(matchText, varA, varB) {
-return 'var(' + varA + ',' + 'var(' + varB + '));';
+return 'var(' + varA + ',' + 'var(' + varB + '))';
 }
 function atApplyToCssProperties(mixinName, fallbacks) {
 mixinName = mixinName.replace(APPLY_NAME_CLEAN, '');
@@ -6069,20 +6113,28 @@ _map: mixinMap,
 _separator: MIXIN_VAR_SEP,
 transform: function (styles, elementProto) {
 this.__currentElementProto = elementProto;
-styleUtil.forRulesInStyles(styles, this._boundTransformRule);
+styleUtil.forRulesInStyles(styles, this._boundFindDefinitions);
+styleUtil.forRulesInStyles(styles, this._boundFindApplications);
+if (elementProto) {
 elementProto.__applyShimInvalid = false;
+}
 this.__currentElementProto = null;
 },
-transformRule: function (rule) {
-rule.cssText = this.transformCssText(rule.parsedCssText);
+_findDefinitions: function (rule) {
+var cssText = rule.parsedCssText;
+cssText = cssText.replace(BAD_VAR, fixVars);
+cssText = cssText.replace(VAR_ASSIGN, produceCssProperties);
+rule.cssText = cssText;
 if (rule.selector === ':root') {
 rule.selector = ':host > *';
 }
 },
-transformCssText: function (cssText) {
-cssText = cssText.replace(BAD_VAR, fixVars);
-cssText = cssText.replace(VAR_ASSIGN, produceCssProperties);
-return consumeCssProperties(cssText);
+_findApplications: function (rule) {
+rule.cssText = consumeCssProperties(rule.cssText);
+},
+transformRule: function (rule) {
+this._findDefinitions(rule);
+this._findApplications(rule);
 },
 _getInitialValueForProperty: function (property) {
 if (!this._measureElement) {
@@ -6094,6 +6146,8 @@ return window.getComputedStyle(this._measureElement).getPropertyValue(property);
 }
 };
 ApplyShim._boundTransformRule = ApplyShim.transformRule.bind(ApplyShim);
+ApplyShim._boundFindDefinitions = ApplyShim._findDefinitions.bind(ApplyShim);
+ApplyShim._boundFindApplications = ApplyShim._findApplications.bind(ApplyShim);
 return ApplyShim;
 }();(function () {
 var prepElement = Polymer.Base._prepElement;
@@ -6404,6 +6458,10 @@ properties: props,
 key: o
 };
 },
+_rootSelector: /:root|:host\s*>\s*\*/,
+_checkRoot: function (hostScope, selector) {
+return Boolean(selector.match(this._rootSelector)) || hostScope === 'html' && selector.indexOf('html') > -1;
+},
 whenHostOrRootRule: function (scope, rule, style, callback) {
 if (!rule.propertyInfo) {
 self.decorateRule(rule);
@@ -6413,16 +6471,12 @@ return;
 }
 var hostScope = scope.is ? styleTransformer._calcHostScope(scope.is, scope.extends) : 'html';
 var parsedSelector = rule.parsedSelector;
-var isRoot = parsedSelector === ':root';
-var isHost = parsedSelector.indexOf(':host') === 0;
+var isRoot = this._checkRoot(hostScope, parsedSelector);
+var isHost = !isRoot && parsedSelector.indexOf(':host') === 0;
 var cssBuild = scope.__cssBuild || style.__cssBuild;
 if (cssBuild === 'shady') {
-isRoot = parsedSelector === hostScope + ' > *.' + hostScope || parsedSelector.indexOf('html') !== -1;
+isRoot = parsedSelector === hostScope + ' > *.' + hostScope || parsedSelector.indexOf('html') > -1;
 isHost = !isRoot && parsedSelector.indexOf(hostScope) === 0;
-}
-if (cssBuild === 'shadow') {
-isRoot = parsedSelector === ':host > *' || parsedSelector === 'html';
-isHost = isHost && !isRoot;
 }
 if (!isRoot && !isHost) {
 return;
@@ -6432,6 +6486,9 @@ if (isHost) {
 if (settings.useNativeShadow && !rule.transformedSelector) {
 rule.transformedSelector = styleTransformer._transformRuleCss(rule, styleTransformer._transformComplexSelector, scope.is, hostScope);
 }
+selectorToMatch = rule.transformedSelector || rule.parsedSelector;
+}
+if (isRoot && hostScope === 'html') {
 selectorToMatch = rule.transformedSelector || rule.parsedSelector;
 }
 callback({
@@ -6538,6 +6595,9 @@ if (cssText) {
 style = styleUtil.applyCss(cssText, selector, null, element._scopeStyle);
 }
 } else if (!style.parentNode) {
+if (IS_IE && cssText.indexOf('@media') > -1) {
+style.textContent = cssText;
+}
 styleUtil.applyStyle(style, null, element._scopeStyle);
 }
 }
@@ -6547,9 +6607,6 @@ if (element._customStyle != style) {
 style._useCount++;
 }
 element._customStyle = style;
-}
-if (IS_IE) {
-style.textContent = style.textContent;
 }
 return style;
 },
@@ -6993,10 +7050,10 @@ var styleRules = styleUtil.rulesForStyle(e);
 if (!targetedBuild) {
 styleUtil.forEachRule(styleRules, function (rule) {
 styleTransformer.documentRule(rule);
-if (settings.useNativeCSSProperties && !buildType) {
-applyShim.transformRule(rule);
-}
 });
+if (settings.useNativeCSSProperties && !buildType) {
+applyShim.transform([e]);
+}
 }
 if (settings.useNativeCSSProperties) {
 e.textContent = styleUtil.toCssText(styleRules);
@@ -7223,8 +7280,7 @@ _forwardInstanceProp: function (inst, prop, value) {
 },
 _notifyPathUpImpl: function (path, value) {
 var dataHost = this.dataHost;
-var dot = path.indexOf('.');
-var root = dot < 0 ? path : path.slice(0, dot);
+var root = Polymer.Path.root(path);
 dataHost._forwardInstancePath.call(dataHost, this, path, value);
 if (root in dataHost._parentProps) {
 dataHost._templatized._notifyPath(dataHost._parentPropPrefix + path, value);
@@ -7234,7 +7290,7 @@ _pathEffectorImpl: function (path, value, fromAbove) {
 if (this._forwardParentPath) {
 if (path.indexOf(this._parentPropPrefix) === 0) {
 var subPath = path.substring(this._parentPropPrefix.length);
-var model = this._modelForPath(subPath);
+var model = Polymer.Path.root(subPath);
 if (model in this._parentProps) {
 this._forwardParentPath(subPath, value);
 }
@@ -8239,6 +8295,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
 
+
 <!--
 @license
 Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
@@ -9040,7 +9097,7 @@ Custom property | Description | Default
 @homepage polymer.github.io
 -->
 
-<dom-module id="iron-icon" assetpath="../../../bower_components/iron-icon/">
+<dom-module id="iron-icon" assetpath="../../bower_components/iron-icon/">
   <template>
     <style>
       :host {
@@ -9980,7 +10037,7 @@ Custom property | Description | Default
 @demo demo/index.html
 -->
 
-<dom-module id="paper-badge" assetpath="../../../bower_components/paper-badge/">
+<dom-module id="paper-badge" assetpath="../../bower_components/paper-badge/">
   <template>
     <style>
       :host {
@@ -11041,7 +11098,7 @@ Apply `circle` class to make the rippling effect within a circle.
 @demo demo/index.html
 -->
 
-<dom-module id="paper-ripple" assetpath="../../../bower_components/paper-ripple/">
+<dom-module id="paper-ripple" assetpath="../../bower_components/paper-ripple/">
 
   <template>
     <style>
@@ -12446,7 +12503,7 @@ The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
---><dom-module id="paper-material-shared-styles" assetpath="../../../bower_components/paper-material/">
+--><dom-module id="paper-material-shared-styles" assetpath="../../bower_components/paper-material/">
   <template>
     <style>
       :host {
@@ -12552,7 +12609,7 @@ Custom property | Description | Default
 @demo demo/index.html
 -->
 
-<dom-module id="paper-button" assetpath="../../../bower_components/paper-button/">
+<dom-module id="paper-button" assetpath="../../bower_components/paper-button/">
   <template strip-whitespace="">
     <style include="paper-material-shared-styles">
       :host {
@@ -12721,7 +12778,7 @@ Custom property | Description | Default
 @demo demo/index.html
 -->
 
-<dom-module id="iron-image" assetpath="../../../bower_components/iron-image/">
+<dom-module id="iron-image" assetpath="../../bower_components/iron-image/">
   <template>
     <style>
       :host {
@@ -13071,7 +13128,7 @@ Example:
 @demo demo/index.html
 -->
 
-<dom-module id="paper-material" assetpath="../../../bower_components/paper-material/">
+<dom-module id="paper-material" assetpath="../../bower_components/paper-material/">
   <template>
     <style include="paper-material-shared-styles"></style>
     <style>
@@ -13172,7 +13229,7 @@ Custom property | Description | Default
 @demo demo/index.html
 -->
 
-<dom-module id="paper-card" assetpath="../../../bower_components/paper-card/">
+<dom-module id="paper-card" assetpath="../../bower_components/paper-card/">
   <template>
     <style include="paper-material">
       :host {
@@ -13404,7 +13461,7 @@ In order to apply the `Roboto` font to this element, make sure you've imported `
 @demo demo/index.html
 -->
 
-<dom-module id="paper-checkbox" assetpath="../../../bower_components/paper-checkbox/">
+<dom-module id="paper-checkbox" assetpath="../../bower_components/paper-checkbox/">
   <template strip-whitespace="">
     <style>
       :host {
@@ -14255,7 +14312,7 @@ Custom property | Description | Default
 `--iron-overlay-backdrop-opened`           | Mixin applied to `iron-overlay-backdrop` when it is displayed | {}
 -->
 
-<dom-module id="iron-overlay-backdrop" assetpath="../../../bower_components/iron-overlay-behavior/">
+<dom-module id="iron-overlay-backdrop" assetpath="../../bower_components/iron-overlay-behavior/">
 
   <template>
     <style>
@@ -15600,7 +15657,7 @@ Custom property | Description | Default
 @hero hero.svg
 -->
 
-<dom-module id="paper-dialog-scrollable" assetpath="../../../bower_components/paper-dialog-scrollable/">
+<dom-module id="paper-dialog-scrollable" assetpath="../../bower_components/paper-dialog-scrollable/">
 
   <template>
     <style>
@@ -16004,7 +16061,7 @@ Custom property | Description | Default
 `--paper-dialog-button-color`     | Button area foreground color                | `--default-primary-color`
 -->
 
-<dom-module id="paper-dialog-shared-styles" assetpath="../../../bower_components/paper-dialog-behavior/">
+<dom-module id="paper-dialog-shared-styles" assetpath="../../bower_components/paper-dialog-behavior/">
   <template>
     <style>
       :host {
@@ -16121,7 +16178,7 @@ element.
 @demo demo/index.html
 -->
 
-<dom-module id="paper-dialog" assetpath="../../../bower_components/paper-dialog/">
+<dom-module id="paper-dialog" assetpath="../../bower_components/paper-dialog/">
   <template>
     <style include="paper-dialog-shared-styles"></style>
     <content></content>
@@ -17121,7 +17178,7 @@ Custom property | Description | Default
 @hero hero.svg
 -->
 
-<dom-module id="paper-drawer-panel" assetpath="../../../bower_components/paper-drawer-panel/">
+<dom-module id="paper-drawer-panel" assetpath="../../bower_components/paper-drawer-panel/">
   <template>
     <style>
       :host {
@@ -17867,7 +17924,7 @@ Note: announcements are only audible if you have a screen reader enabled.
 @demo demo/index.html
 -->
 
-<dom-module id="iron-a11y-announcer" assetpath="../../../bower_components/iron-a11y-announcer/">
+<dom-module id="iron-a11y-announcer" assetpath="../../bower_components/iron-a11y-announcer/">
   <template>
     <style>
       :host {
@@ -18877,7 +18934,7 @@ Custom property | Description | Default
 `--paper-input-char-counter` | Mixin applied to the element | `{}`
 -->
 
-<dom-module id="paper-input-char-counter" assetpath="../../../bower_components/paper-input/">
+<dom-module id="paper-input-char-counter" assetpath="../../bower_components/paper-input/">
   <template>
     <style>
       :host {
@@ -19039,7 +19096,7 @@ This element is `display:block` by default, but you can set the `inline` attribu
 `display:inline-block`.
 -->
 
-<dom-module id="paper-input-container" assetpath="../../../bower_components/paper-input/">
+<dom-module id="paper-input-container" assetpath="../../bower_components/paper-input/">
   <template>
     <style>
       :host {
@@ -19585,7 +19642,7 @@ Custom property | Description | Default
 `--paper-input-error`                   | Mixin applied to the error        | `{}`
 -->
 
-<dom-module id="paper-input-error" assetpath="../../../bower_components/paper-input/">
+<dom-module id="paper-input-error" assetpath="../../bower_components/paper-input/">
   <template>
     <style>
       :host {
@@ -19704,7 +19761,7 @@ style this element.
 @demo demo/index.html
 -->
 
-<dom-module id="paper-input" assetpath="../../../bower_components/paper-input/">
+<dom-module id="paper-input" assetpath="../../bower_components/paper-input/">
   <template>
     <style>
       :host {
@@ -20300,7 +20357,7 @@ method is called on the element.
 @demo demo/index.html
 -->
 
-<dom-module id="iron-dropdown" assetpath="../../../bower_components/iron-dropdown/">
+<dom-module id="iron-dropdown" assetpath="../../bower_components/iron-dropdown/">
   <template>
     <style>
       :host {
@@ -20836,7 +20893,7 @@ Custom property | Description | Default
 @demo demo/index.html
 -->
 
-<dom-module id="paper-menu-button" assetpath="../../../bower_components/paper-menu-button/">
+<dom-module id="paper-menu-button" assetpath="../../bower_components/paper-menu-button/">
   <template>
     <style>
       :host {
@@ -21444,7 +21501,7 @@ The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
---><dom-module id="paper-dropdown-menu-shared-styles" assetpath="../../../bower_components/paper-dropdown-menu/">
+--><dom-module id="paper-dropdown-menu-shared-styles" assetpath="../../bower_components/paper-dropdown-menu/">
   <template>
     <style>
       :host {
@@ -21576,7 +21633,7 @@ respectively.
 @demo demo/index.html
 -->
 
-<dom-module id="paper-dropdown-menu" assetpath="../../../bower_components/paper-dropdown-menu/">
+<dom-module id="paper-dropdown-menu" assetpath="../../bower_components/paper-dropdown-menu/">
   <template>
     <style include="paper-dropdown-menu-shared-styles"></style>
 
@@ -21914,7 +21971,7 @@ Custom property | Description | Default
 @demo demo/index.html
 -->
 
-<dom-module id="paper-fab" assetpath="../../../bower_components/paper-fab/">
+<dom-module id="paper-fab" assetpath="../../bower_components/paper-fab/">
   <template strip-whitespace="">
     <style include="paper-material-shared-styles">
       :host {
@@ -22174,7 +22231,7 @@ Custom property | Description | Default
 @hero hero.svg
 -->
 
-<dom-module id="paper-header-panel" assetpath="../../../bower_components/paper-header-panel/">
+<dom-module id="paper-header-panel" assetpath="../../bower_components/paper-header-panel/">
   <template>
     <style>
       :host {
@@ -22600,7 +22657,7 @@ Custom property | Description | Default
 @demo demo/index.html
 -->
 
-<dom-module id="paper-icon-button" assetpath="../../../bower_components/paper-icon-button/">
+<dom-module id="paper-icon-button" assetpath="../../bower_components/paper-icon-button/">
   <template strip-whitespace="">
     <style>
       :host {
@@ -22737,7 +22794,7 @@ Custom property | Description | Default
 @demo demo/index.html
 -->
 
-<dom-module id="iron-autogrow-textarea" assetpath="../../../bower_components/iron-autogrow-textarea/">
+<dom-module id="iron-autogrow-textarea" assetpath="../../bower_components/iron-autogrow-textarea/">
   <template>
     <style>
       :host {
@@ -23066,7 +23123,7 @@ See `Polymer.PaperInputContainer` for a list of custom properties used to
 style this element.
 -->
 
-<dom-module id="paper-textarea" assetpath="../../../bower_components/paper-input/">
+<dom-module id="paper-textarea" assetpath="../../bower_components/paper-input/">
   <template>
     <style>
       :host {
@@ -23197,7 +23254,7 @@ The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
---><dom-module id="paper-item-shared-styles" assetpath="../../../bower_components/paper-item/">
+--><dom-module id="paper-item-shared-styles" assetpath="../../bower_components/paper-item/">
   <template>
     <style>
       :host, .paper-item {
@@ -23251,84 +23308,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
   </template>
-</dom-module>
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
---><!--
-`<paper-icon-item>` is a convenience element to make an item with icon. It is an interactive list
-item with a fixed-width icon area, according to Material Design. This is useful if the icons are of
-varying widths, but you want the item bodies to line up. Use this like a `<paper-item>`. The child
-node with the attribute `item-icon` is placed in the icon area.
-
-    <paper-icon-item>
-      <iron-icon icon="favorite" item-icon></iron-icon>
-      Favorite
-    </paper-icon-item>
-    <paper-icon-item>
-      <div class="avatar" item-icon></div>
-      Avatar
-    </paper-icon-item>
-
-### Styling
-
-The following custom properties and mixins are available for styling:
-
-Custom property               | Description                                    | Default
-------------------------------|------------------------------------------------|----------
-`--paper-item-icon-width`     | Width of the icon area                         | `56px`
-`--paper-item-icon`           | Mixin applied to the icon area                 | `{}`
-`--paper-icon-item`           | Mixin applied to the item                      | `{}`
-`--paper-item-selected-weight`| The font weight of a selected item             | `bold`
-`--paper-item-selected`       | Mixin applied to selected paper-items                | `{}`
-`--paper-item-disabled-color` | The color for disabled paper-items             | `--disabled-text-color`
-`--paper-item-disabled`       | Mixin applied to disabled paper-items        | `{}`
-`--paper-item-focused`        | Mixin applied to focused paper-items         | `{}`
-`--paper-item-focused-before` | Mixin applied to :before focused paper-items | `{}`
--->
-
-<dom-module id="paper-icon-item" assetpath="../../../bower_components/paper-item/">
-  <template>
-    <style include="paper-item-shared-styles"></style>
-    <style>
-      :host {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        @apply(--paper-font-subhead);
-
-        @apply(--paper-item);
-        @apply(--paper-icon-item);
-      }
-
-      .content-icon {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-
-        width: var(--paper-item-icon-width, 56px);
-        @apply(--paper-item-icon);
-      }
-    </style>
-
-    <div id="contentIcon" class="content-icon">
-      <content select="[item-icon]"></content>
-    </div>
-    <content></content>
-  </template>
-
-  <script>
-    Polymer({
-      is: 'paper-icon-item',
-
-      behaviors: [
-        Polymer.PaperItemBehavior
-      ]
-    });
-  </script>
 </dom-module>
 <!--
 @license
@@ -23408,7 +23387,7 @@ This element has `role="listitem"` by default. Depending on usage, it may be mor
 @demo demo/index.html
 -->
 
-<dom-module id="paper-item" assetpath="../../../bower_components/paper-item/">
+<dom-module id="paper-item" assetpath="../../bower_components/paper-item/">
   <template>
     <style include="paper-item-shared-styles"></style>
     <style>
@@ -23821,7 +23800,7 @@ of a listbox item will also focus it.
 @demo demo/index.html
 -->
 
-<dom-module id="paper-listbox" assetpath="../../../bower_components/paper-listbox/">
+<dom-module id="paper-listbox" assetpath="../../bower_components/paper-listbox/">
   <template>
     <style>
       :host {
@@ -23862,7 +23841,7 @@ The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
---><dom-module id="paper-menu-shared-styles" assetpath="../../../bower_components/paper-menu/">
+--><dom-module id="paper-menu-shared-styles" assetpath="../../bower_components/paper-menu/">
   <template>
     <style>
       /* need a wrapper element to make this higher specificity than the :host rule in paper-item */
@@ -23960,7 +23939,7 @@ of a menu item will also focus it.
 @demo demo/index.html
 -->
 
-<dom-module id="paper-menu" assetpath="../../../bower_components/paper-menu/">
+<dom-module id="paper-menu" assetpath="../../bower_components/paper-menu/">
   <template>
     <style include="paper-menu-shared-styles"></style>
     <style>
@@ -24192,7 +24171,7 @@ Custom property                                  | Description                  
 @demo demo/index.html
 -->
 
-<dom-module id="paper-progress" assetpath="../../../bower_components/paper-progress/">
+<dom-module id="paper-progress" assetpath="../../bower_components/paper-progress/">
   <template>
     <style>
       :host {
@@ -24503,7 +24482,7 @@ In order to apply the `Roboto` font to this element, make sure you've imported `
 @demo demo/index.html
 -->
 
-<dom-module id="paper-radio-button" assetpath="../../../bower_components/paper-radio-button/">
+<dom-module id="paper-radio-button" assetpath="../../bower_components/paper-radio-button/">
   <template strip-whitespace="">
     <style>
       :host {
@@ -24789,7 +24768,7 @@ Custom property | Description | Default
 @demo demo/index.html
 -->
 
-<dom-module id="paper-radio-group" assetpath="../../../bower_components/paper-radio-group/">
+<dom-module id="paper-radio-group" assetpath="../../bower_components/paper-radio-group/">
   <template>
     <style>
       :host {
@@ -25006,7 +24985,7 @@ Custom property | Description | Default
 @hero hero.svg
 -->
 
-<dom-module id="paper-scroll-header-panel" assetpath="../../../bower_components/paper-scroll-header-panel/">
+<dom-module id="paper-scroll-header-panel" assetpath="../../bower_components/paper-scroll-header-panel/">
   <template>
     <style>
       :host {
@@ -25556,7 +25535,7 @@ Custom property | Description | Default
 @hero hero.svg
 -->
 
-<dom-module id="paper-slider" assetpath="../../../bower_components/paper-slider/">
+<dom-module id="paper-slider" assetpath="../../bower_components/paper-slider/">
   <template strip-whitespace="">
     <style>
       :host {
@@ -26307,7 +26286,7 @@ The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
---><dom-module id="paper-spinner-styles" assetpath="../../../bower_components/paper-spinner/">
+--><dom-module id="paper-spinner-styles" assetpath="../../bower_components/paper-spinner/">
   <template>
     <style>
       /*
@@ -26684,7 +26663,7 @@ Custom property | Description | Default
 @demo demo/index.html
 -->
 
-<dom-module id="paper-spinner" assetpath="../../../bower_components/paper-spinner/">
+<dom-module id="paper-spinner" assetpath="../../bower_components/paper-spinner/">
   <template strip-whitespace="">
     <style include="paper-spinner-styles"></style>
 
@@ -26771,7 +26750,7 @@ In order to apply the `Roboto` font to this element, make sure you've imported `
 
 -->
 
-<dom-module id="paper-tab" assetpath="../../../bower_components/paper-tabs/">
+<dom-module id="paper-tab" assetpath="../../bower_components/paper-tabs/">
   <template>
     <style>
       :host {
@@ -26986,7 +26965,7 @@ Custom property | Description | Default
 @demo demo/index.html
 -->
 
-<dom-module id="paper-tabs" assetpath="../../../bower_components/paper-tabs/">
+<dom-module id="paper-tabs" assetpath="../../bower_components/paper-tabs/">
   <template>
     <style>
       :host {
@@ -27606,7 +27585,7 @@ In order to apply the `Roboto` font to this element, make sure you've imported `
 @hero hero.svg
 -->
 
-<dom-module id="paper-toast" assetpath="../../../bower_components/paper-toast/">
+<dom-module id="paper-toast" assetpath="../../bower_components/paper-toast/">
   <template>
     <style>
       :host {
@@ -27910,7 +27889,7 @@ In order to apply the `Roboto` font to this element, make sure you've imported `
 @demo demo/index.html
 -->
 
-<dom-module id="paper-toggle-button" assetpath="../../../bower_components/paper-toggle-button/">
+<dom-module id="paper-toggle-button" assetpath="../../bower_components/paper-toggle-button/">
   <template strip-whitespace="">
 
     <style>
@@ -28212,7 +28191,7 @@ be used as the label of the toolbar via `aria-labelledby`.
 @demo demo/index.html
 -->
 
-<dom-module id="paper-toolbar" assetpath="../../../bower_components/paper-toolbar/">
+<dom-module id="paper-toolbar" assetpath="../../bower_components/paper-toolbar/">
   <template>
     <style>
       :host {
@@ -28533,7 +28512,7 @@ Custom property | Description | Default
 @demo demo/index.html
 -->
 
-<dom-module id="paper-tooltip" assetpath="../../../bower_components/paper-tooltip/">
+<dom-module id="paper-tooltip" assetpath="../../bower_components/paper-tooltip/">
   <template>
     <style>
       :host {
