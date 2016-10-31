@@ -17,8 +17,12 @@
   <span secondary>{{yield}}</span>
 
   <div class="component-example">
-    {{component (concat 'snippets/' snippet.snippetName)}}
+    {{component (concat 'snippets/' snippet.component)}}
   </div>
 
-  {{code-snippet name=snippet.filename}}
+  {{code-snippet name=snippet.template}}
+
+  {{#if snippet.script}}
+    {{code-snippet name=snippet.script}}
+  {{/if}}
 </section>

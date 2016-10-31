@@ -12,7 +12,10 @@ module.exports = function(defaults) {
         stripExcludes: ['.*paper-styles\.html.*']
       }
     },
-    'snippetPaths': [ path.join(appDir, 'templates', 'components', 'snippets') ]
+    'snippetPaths': [
+      path.join(appDir, 'templates', 'components', 'snippets'),
+      path.join(appDir, 'components', 'snippets')
+    ]
   });
 
   /*
