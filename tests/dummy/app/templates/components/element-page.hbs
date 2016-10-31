@@ -1,0 +1,7 @@
+<section>
+  <h1>{{snippet.name}}</h1>
+  <span secondary>{{yield}}</span>
+
+  {{component (concat 'snippets/' snippet.snippetName)}}
+  {{code-snippet name=snippet.filename}}
+</section>

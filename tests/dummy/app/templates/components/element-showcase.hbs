@@ -1,9 +1,0 @@
-{{#each snippets as |snippet|}}
-  <section>
-    <h3>{{snippet.name}}</h3>
-    <span secondary>{{yield}}</span>
-
-    {{component (concat 'snippets/' snippet.snippetName)}}
-    {{code-snippet name=snippet.filename}}
-  </section>
-{{/each}}

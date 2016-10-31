@@ -7,9 +7,11 @@
       {{#link-to 'index' tabindex="-1"}}
         <paper-item>Home</paper-item>
       {{/link-to}}
-      {{#link-to 'input-elements' tabindex="-1"}}
-        <paper-item>Input elements</paper-item>
-      {{/link-to}}
+      {{#each snippets.snippets as |snippet|}}
+        {{#link-to snippet.name tabindex="-1"}}
+          <paper-item>{{snippet.name}}</paper-item>
+        {{/link-to}}
+      {{/each}}
     </paper-menu>
   </paper-header-panel>
   <paper-header-panel main>
@@ -18,7 +20,6 @@
       <div>Ember Polymer Paper demo</div>
     </paper-toolbar>
     <div class="outlet">
-      <h1>ember-polymer-paper</h1>
       {{outlet}}
     </div>
   </paper-header-panel>

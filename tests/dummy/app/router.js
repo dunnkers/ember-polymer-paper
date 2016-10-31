@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import config from './config/environment';
+import getSnippets from './utils/get-snippets';
 
 const Router = Ember.Router.extend({
   location: config.locationType,
@@ -7,7 +8,11 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('input-elements');
+  let snippets = getSnippets();
+
+  snippets.forEach((snippet) => {
+    this.route(snippet.name);
+  });
 });
 
 export default Router;
