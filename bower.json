@@ -6,6 +6,7 @@
     "ember-qunit-notifications": "0.1.0",
     "polymer": "^1.7.0",
     "webcomponentsjs": "^0.7.22",
-    "paper-elements": "PolymerElements/paper-elements#^1.0.7"
+    "paper-elements": "PolymerElements/paper-elements#^1.0.7",
+    "highlightjs": "^9.7.0"
   }
 }

@@ -36,3 +36,11 @@ paper-listbox a.active paper-item, paper-menu a.active paper-item {
   top: 8px;
   left: 10px;
 }
+
+pre.hljs {
+  font-family: 'Roboto Mono', 'Consolas', 'Menlo', monospace;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 20px;
+  -webkit-font-smoothing: antialiased;
+}
