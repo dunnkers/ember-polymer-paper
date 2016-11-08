@@ -2,8 +2,7 @@
   <h1>
     {{snippet.name}}
     <span>
-      <a href={{concat
-                  "https://elements.polymer-project.org/elements/"
+      <a href={{concat "https://elements.polymer-project.org/elements/"
                   snippet.name}}
          target="_tab"
          title={{concat snippet.name " polymer element reference"}}
@@ -20,9 +19,10 @@
     {{component (concat 'snippets/' snippet.component)}}
   </div>
 
-  {{code-snippet name=snippet.template}}
-
-  {{#if snippet.script}}
-    {{code-snippet name=snippet.script}}
-  {{/if}}
+  <div class="layout horizontal">
+    {{code-snippet name=snippet.template}}
+    {{#if snippet.script}}
+      {{code-snippet name=snippet.script}}
+    {{/if}}
+  </div>
 </section>
