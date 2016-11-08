@@ -45,4 +45,6 @@ pre.hljs {
   font-size: 13px;
   line-height: 20px;
   -webkit-font-smoothing: antialiased;
+
+  /* code-editor max-width line is 630px */
 }
