@@ -1,25 +1,43 @@
 <p>
   Most commonly we use it in combination with a paper-listbox.
 </p>
-{{#paper-dropdown-menu label="Your favourite pastry"}}
-  {{paper-listbox pastries selectedItem=pastry class="dropdown-content"}}
-{{/paper-dropdown-menu}}
 
-<p>
-  Your favourite pastry is: {{pastry}}
-</p>
+{{#element-example name="pastries" as |ex|}}
+  {{#ex.code}}
+    {{!-- BEGIN-SNIPPET pastries --}}
+    {{#paper-dropdown-menu label="Your favourite pastry"}}
+      {{paper-listbox pastries selectedItem=pastry class="dropdown-content"}}
+    {{/paper-dropdown-menu}}
+    {{!-- END-SNIPPET --}}
+  {{/ex.code}}
+
+  {{#ex.result}}
+    {{!-- BEGIN-SNIPPET pastries-result --}}
+    Your favourite pastry is: {{pastry}}
+    {{!-- END-SNIPPET --}}
+  {{/ex.result}}
+{{/element-example}}
 
 <p>
   But we can use any element that behaves like a iron-selector:
 </p>
 
-{{#paper-dropdown-menu label="Choose one dinosaur" selectedItem=dinosaur}}
-  <paper-radio-group class="dropdown-content">
-    <paper-radio-button name="a">allosaurus</paper-radio-button>
-    <paper-radio-button name="b">brontosaurus</paper-radio-button>
-    <paper-radio-button name="d">diplodocus</paper-radio-button>
-  </paper-radio-group>
-{{/paper-dropdown-menu}}
-<p>
-  Dinosaur: {{dinosaur}}
-</p>
+{{#element-example name="dinosaurs" as |ex|}}
+  {{#ex.code}}
+    {{!-- BEGIN-SNIPPET dinosaurs --}}
+    {{#paper-dropdown-menu label="Choose one dinosaur" selectedItem=dinosaur}}
+      <paper-radio-group class="dropdown-content">
+        <paper-radio-button name="a">allosaurus</paper-radio-button>
+        <paper-radio-button name="b">brontosaurus</paper-radio-button>
+        <paper-radio-button name="d">diplodocus</paper-radio-button>
+      </paper-radio-group>
+    {{/paper-dropdown-menu}}
+    {{!-- END-SNIPPET --}}
+  {{/ex.code}}
+
+  {{#ex.result}}
+    {{!-- BEGIN-SNIPPET dinosaurs-result --}}
+    Dinosaur: {{dinosaur}}
+    {{!-- END-SNIPPET --}}
+  {{/ex.result}}
+{{/element-example}}

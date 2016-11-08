@@ -15,7 +15,8 @@ module.exports = function(defaults) {
     'snippetPaths': [
       path.join(appDir, 'templates', 'components', 'snippets'),
       path.join(appDir, 'components', 'snippets')
-    ]
+    ],
+    'snippetSearchPaths': [ appDir ]
   });
 
   app.import('bower_components/highlightjs/styles/github.css');

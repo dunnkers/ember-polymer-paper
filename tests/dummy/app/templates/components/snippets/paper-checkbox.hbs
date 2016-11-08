@@ -1,11 +1,19 @@
-{{#paper-checkbox checked=hasDriverLicense}}
-I have a drivers license
-{{/paper-checkbox}}
+{{#element-example name="drivers-license" as |ex|}}
+  {{#ex.code}}
+    {{!-- BEGIN-SNIPPET drivers-license --}}
+    {{#paper-checkbox checked=hasDriverLicense}}
+    I have a drivers license
+    {{/paper-checkbox}}
+    {{!-- END-SNIPPET --}}
+  {{/ex.code}}
 
-<p>
-  {{#if hasDriverLicense}}
-    You have a drivers license 🚗
-  {{else}}
-    You do not have a drivers license 🚧
-  {{/if}}
-</p>
+  {{#ex.result}}
+    {{!-- BEGIN-SNIPPET drivers-license-result --}}
+    {{#if hasDriverLicense}}
+      You have a drivers license 🚗
+    {{else}}
+      You do not have a drivers license 🚧
+    {{/if}}
+    {{!-- END-SNIPPET --}}
+  {{/ex.result}}
+{{/element-example}}

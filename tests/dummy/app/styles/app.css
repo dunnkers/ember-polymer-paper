@@ -6,14 +6,6 @@ body {
   padding: 30px;
 }
 
-section {
-  margin: 20px 0;
-}
-
-section > p {
-  margin-left: 30px;
-}
-
 /* TODO set this as default for paper-item links in custom-styles. */
 paper-listbox a, paper-menu a {
   display: block;
@@ -26,17 +18,29 @@ paper-listbox a.active paper-item, paper-menu a.active paper-item {
 }
 /**/
 
-.component-example {
-  border: 1px solid #666;
-  padding: 20px;
+paper-icon-button.github-logo {
+  width: 48px;
+  height: 48px;
+  color: white;
+}
+
+.ember-logo {
+  width: 300px;
+  height: 300px;
+  color: red;
+  background-color: red;
+}
+
+.divider {
+  border-bottom: 1px solid #ccc;
+  text-align: right;
+  padding-right: 10px;
 }
 
 .polymer-logo {
-  width: 32px;
-  height: 32px;
-  position: relative;
-  top: 8px;
-  left: 10px;
+  margin-left: 15px;
+  width: 40px;
+  height: 40px;
 }
 
 pre.hljs {
@@ -45,6 +49,33 @@ pre.hljs {
   font-size: 13px;
   line-height: 20px;
   -webkit-font-smoothing: antialiased;
-
+  margin: 0;
   /* code-editor max-width line is 630px */
+}
+
+/* element-example */
+.element-example {
+  width: 700px;
+  margin-bottom: 100px;
+  margin-top: 15px;
+}
+
+.element-example-display {
+  padding: 25px;
+  padding-top: 35px;
+  padding-bottom: 10px;
+}
+
+.element-example-result {
+  padding-top: 15px;
+}
+
+.element-example-snippet {
+  background-color: #f8f8f8;
+}
+
+.element-example-snippet pre {
+  padding: 10px 30px 10px 4px;
+  border-left: 1px solid #ececec;
+  margin-left: 20px;
 }

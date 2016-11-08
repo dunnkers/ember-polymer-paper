@@ -1,0 +1,17 @@
+<section class="element-page">
+  <h1>
+    {{snippet.name}}
+    <span>
+      <a href={{concat "https://elements.polymer-project.org/elements/"
+                  snippet.name}}
+         target="_tab" tabIndex="-1"
+         title={{concat snippet.name " polymer element reference"}}>
+        <paper-icon-button src="https://elements.polymer-project.org/images/polymer.svg"
+             alt="Polymer logo" class="polymer-logo"></paper-icon-button>
+      </a>
+    </span>
+  </h1>
+  <div class="divider"></div>
+
+  {{component (concat 'snippets/' snippet.component)}}
+</section>
