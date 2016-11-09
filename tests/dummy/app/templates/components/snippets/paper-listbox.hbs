@@ -5,6 +5,9 @@ Block usage:
 <p>
   Selected = {{blockSelected}}
 </p>
+{{#paper-listbox items selectedItem=blockSelected as |item|}}
+  <paper-item>{{item}}</paper-item>
+{{/paper-listbox}}
 
 Non block usage:
 {{paper-listbox items selectedItem=nonBlockSelected}}
