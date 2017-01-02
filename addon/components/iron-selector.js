@@ -4,35 +4,55 @@ const { computed } = Ember;
 let IronSelector = Ember.Component.extend({
   attributeBindings: [
     'selected',
-    'role'
+    'role',
+    'attrForSelected',
+    'multi'
   ],
 
   selectedItem: computed({
-    get() {
-      Ember.get(this, 'selectedItem');
+    get(key) {
+      // return Ember.get(this, key);
     },
 
     set(key, value) {
-      if (!!this.element) {
-        this.setBoundValue(value);
+      // if (!!this.element) {
+      //   this.setBoundValue(value);
+      // }
+      let idx = this.getItemIndex();
+
+      if (this.getSelectedIndex() !== idx && idx !== -1) {
+        Ember.set(this, 'selected', idx);
       }
 
       return value;
     }
   }),
 
-  setBoundValue(value) {
-    let selected = this.getSelectedIndex();
-    let itemIndex = this.getItemIndex(value);
-
-    if (selected !== itemIndex) {
-      this.element.selectIndex(itemIndex);
+  // selected: computed({
+  //   get(key) {
+  //     return Ember.get(this, `_${key}`);
+  //   },
+  //
+  //   set(key, value) {
+  //     Ember.set(this, `_${key}`, value);
+  //   }
+  // }),
+  //
+  // setBoundValue(value) {
+  //   let selected = this.getSelectedIndex();
+  //   let itemIndex = this.getItemIndex(value);
+  //
+  //   if (selected !== itemIndex) {
+  //     this.element.selectIndex(itemIndex);
+  //   }
+  // },
+  //
+  getItemIndex() {
+    if (!!this.get('items') && !!this.get('selectedItem')) {
+      return this.get('items').indexOf(this.get('selectedItem'));
+    } else {
+      return -1;
     }
-  },
-
-  getItemIndex(item) {
-    // FIXME this might prevent functionality when not using items positional.
-    return this.get('items').indexOf(item);
   },
 
   getSelectedIndex() {
@@ -62,8 +82,10 @@ let IronSelector = Ember.Component.extend({
       this.set('selectedItem', selectedItem);
     });
 
-    if (!!this.get('selectedItem')) {
-      this.setBoundValue(this.get('selectedItem'));
+    // initial selection
+    if (!!this.get('items') && !!this.get('selectedItem')) {
+      let idx = this.get('items').indexOf(this.get('selectedItem'));
+      Ember.set(this, 'selected', idx);
     }
   }
 });

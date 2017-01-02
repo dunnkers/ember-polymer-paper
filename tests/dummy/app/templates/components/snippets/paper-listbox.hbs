@@ -1,13 +1,42 @@
-Block usage:
+<p>Block usage:</p>
+
+{{#element-example name="block-usage" as |ex|}}
+  {{#ex.code}}
+    {{!-- BEGIN-SNIPPET block-usage --}}
+    {{#paper-listbox items selectedItem=blockSelected as |item|}}
+      <paper-item>{{item}}</paper-item>
+    {{/paper-listbox}}
+    {{!-- END-SNIPPET --}}
+  {{/ex.code}}
+
+  {{#ex.result}}
+    {{!-- BEGIN-SNIPPET block-usage-result --}}
+    Selected = {{blockSelected}}
+    {{!-- END-SNIPPET --}}
+  {{/ex.result}}
+{{/element-example}}
+
+<p>Another listbox to prove the values being bound.</p>
+
 {{#paper-listbox items selectedItem=blockSelected as |item|}}
   <paper-item>{{item}}</paper-item>
 {{/paper-listbox}}
-<p>
-  Selected = {{blockSelected}}
-</p>
-{{#paper-listbox items selectedItem=blockSelected as |item|}}
-  <paper-item>{{item}}</paper-item>
-{{/paper-listbox}}
+
+<p>Multi select:</p>
+
+{{#element-example name="multi" as |ex|}}
+  {{#ex.code}}
+    {{!-- BEGIN-SNIPPET multi --}}
+    {{paper-listbox items selectedItem=multiSelected multi=true}}
+    {{!-- END-SNIPPET --}}
+  {{/ex.code}}
+
+  {{#ex.result}}
+    {{!-- BEGIN-SNIPPET multi-result --}}
+    Selected = {{multiSelected}}
+    {{!-- END-SNIPPET --}}
+  {{/ex.result}}
+{{/element-example}}
 
 Non block usage:
 {{paper-listbox items selectedItem=nonBlockSelected}}
@@ -23,4 +52,21 @@ Without a positional param:
 {{/paper-listbox}}
 <p>
   Selected = {{noPositionalSelected}}
+</p>
+
+With other attribute:
+{{#paper-listbox selectedItem=withNameAttribute selected="b"
+  attrForSelected="name"}}
+  <paper-item name="a">Item a</paper-item>
+  <paper-item name="b">Item b</paper-item>
+  <paper-item name="c">Item c</paper-item>
+{{/paper-listbox}}
+<p>
+  Selected = {{withNameAttribute}}
+</p>
+
+Using just index:
+{{paper-listbox items selected=selectedAnimal}}
+<p>
+  Selected = {{selectedAnimal}}
 </p>

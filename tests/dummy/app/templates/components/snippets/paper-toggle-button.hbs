@@ -1,7 +1,17 @@
-{{#paper-toggle-button checked=toggled}}
+{{#paper-toggle-button update=(action (mut toggled))}}
 Toggle
 {{/paper-toggle-button}}
 
 <p>
   Toggled: {{toggled}}
+</p>
+
+<p>We could also use a traditional two-way binding.</p>
+
+{{#paper-toggle-button checked=onoff}}
+On/Off
+{{/paper-toggle-button}}
+
+<p>
+  On: {{onoff}}
 </p>
