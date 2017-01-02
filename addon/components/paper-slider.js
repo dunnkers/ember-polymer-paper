@@ -14,11 +14,15 @@ export default Ember.Component.extend({
   didRender() {
     let component = this;
 
-    this.$().on('value-changed', function() {
-      component.set('value', this.immediateValue);
-    });
-    this.$().on('change', function() {
-      component.set('value', this.value);
-    });
+    function updateValue() {
+      if (component.attrs.update && typeof component.attrs.update === 'function') {
+        component.attrs.update(this.immediateValue);
+      } else {
+        component.set('value', this.immediateValue);
+      }
+    }
+
+    this.$().on('value-changed', updateValue);
+    this.$().on('change', updateValue);
   }
 });

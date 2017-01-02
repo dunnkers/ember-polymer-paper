@@ -1,7 +1,7 @@
 {{#element-example name="drivers-license" as |ex|}}
   {{#ex.code}}
     {{!-- BEGIN-SNIPPET drivers-license --}}
-    {{#paper-checkbox checked=hasDriverLicense}}
+    {{#paper-checkbox update=(action (mut hasLicense))}}
     I have a drivers license
     {{/paper-checkbox}}
     {{!-- END-SNIPPET --}}
@@ -9,10 +9,32 @@
 
   {{#ex.result}}
     {{!-- BEGIN-SNIPPET drivers-license-result --}}
-    {{#if hasDriverLicense}}
-      You have a drivers license 🚗
+    {{#if hasLicense}}
+      You may drive 🚗
     {{else}}
-      You do not have a drivers license 🚧
+      No hitting the roads for you yet mate! 🚧
+    {{/if}}
+    {{!-- END-SNIPPET --}}
+  {{/ex.result}}
+{{/element-example}}
+
+<p>We could also use a traditional two-way binding.</p>
+
+{{#element-example name="is-adult" as |ex|}}
+  {{#ex.code}}
+    {{!-- BEGIN-SNIPPET is-adult --}}
+    {{#paper-checkbox checked=isAdult}}
+    I am above eighteen
+    {{/paper-checkbox}}
+    {{!-- END-SNIPPET --}}
+  {{/ex.code}}
+
+  {{#ex.result}}
+    {{!-- BEGIN-SNIPPET is-adult-result --}}
+    {{#if isAdult}}
+      You may drink alcohol (in Europe)
+    {{else}}
+      You're too young for alcohol!
     {{/if}}
     {{!-- END-SNIPPET --}}
   {{/ex.result}}

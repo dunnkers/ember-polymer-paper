@@ -1,5 +1,13 @@
-{{paper-slider value=brightness}}
+{{paper-slider update=(action (mut brightness))}}
 
 <p>
   Brightness: {{brightness}}
+</p>
+
+<p>We could also use a traditional two-way binding.</p>
+
+{{paper-slider value=brightness2}}
+
+<p>
+  Brightness: {{brightness2}}
 </p>

@@ -1,5 +1,6 @@
 {{paper-input label="Your name" value=name minlength=3
-  auto-validate=true error-message="More than 3 characters required!"}}
+  auto-validate=true error-message="More than 3 characters required!"
+  update=(action (mut name))}}
 
 {{paper-input type="number" label="Your age" value=age min=0 max=120}}
 
