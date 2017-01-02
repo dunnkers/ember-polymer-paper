@@ -1,54 +1,40 @@
 # ember-polymer-paper [![Build Status](https://travis-ci.org/dunnkers/ember-polymer-paper.svg?branch=master)](https://travis-ci.org/dunnkers/ember-polymer-paper)
 
-Wraps paper-elements in Ember components so you can use them in Ember easily!
-
-## Requirements
-
-This addon relies on Shadow DOM. If a browser does not have Shadow DOM natively,
-it will be polyfilled.
+Wraps [https://elements.polymer-project.org/browse?package=paper-elements](paper-elements) in Ember Components so you can use them in Ember easily! This addon uses [https://github.com/dunnkers/ember-polymer](ember-polymer) under the hood to pull in Polymer.
 
 ## Installation
 
-`ember install ember-polymer-paper`
+```shell
+ember install ember-polymer-paper
+```
 
 ## Usage
 
-This addon inject components with names of the paper-elements into your
-application. This means you can just use any of the paper elements using
-doubles curlies, where attributes can bind to an ember object.
+First, install a paper element:
 
-```html
-{{paper-input value=name}}
+```shell
+bower install PolymerElements/paper-input --save
 ```
 
-That's it! Good luck using epic paper elements!
+Now we can use this like an ember component! Example:
+
+```
+{{paper-input update=(action (mut name)) label="Your name"}}
+```
+
+That's it! This should render something like this:
+
+![Example](https://s30.postimg.org/b5jlpe041/Screen_Shot_2017_01_02_at_17_35_16.png)
+
+See the demo for more examples.
 
 ## Demo
 
 [https://dunnkers.github.io/ember-polymer-paper/](https://dunnkers.github.io/ember-polymer-paper/)
 
-## Configuration
+## Requirements
 
-The addon can be configured in the `config/environment.js` file as such:
-
-```js
-ENV['ember-polymer-paper'] = {
-  option: 'value'
-}
-```
-
-**ElementsToImport**
-
-Determines which paper-elements should be imported and have ember components be
-injected into your application. Defaults to import no elements.
-
-You can import an elements as such:
-
-```js
-  ElementsToImport: {
-    'paper-button': true
-  }
-```
+This addon forces Polymer to use Shadow DOM. Browsers that do not natively support Shadow DOM will be supplied with the [polyfill](https://github.com/webcomponents/webcomponentsjs). Note that this polyfill might result in slightly slower rendering.
 
 ## About
 
