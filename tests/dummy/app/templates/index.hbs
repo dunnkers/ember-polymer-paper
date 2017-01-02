@@ -1,7 +1,16 @@
-<h1>Welcome to ember-polymer-paper!</h1>
+<h1>Welcome to ember-polymer-paper! 🦄✨</h1>
 
-<p>
-  Navigate elements in the drawer panel on the left.
-</p>
+<div class="layout horizontal">
+  {{#each snippets.snippets as |snippet|}}
+    <paper-card heading={{snippet.name}} class="index-element-card">
+      <div class="card-content">
 
-<h1>✌🏻</h1>
+      </div>
+      <div class="card-actions">
+        {{#link-to snippet.name tabIndex="-1" class="paper-button-link"}}
+          <paper-button>Full documentation</paper-button>
+        {{/link-to}}
+      </div>
+    </paper-card>
+  {{/each}}
+</div>

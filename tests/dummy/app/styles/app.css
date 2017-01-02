@@ -6,6 +6,13 @@ body {
   padding: 30px;
 }
 
+/* paper-button link styling */
+.paper-button-link {
+  display: block;
+  color: inherit;
+  text-decoration: inherit;
+}
+
 /* TODO set this as default for paper-item links in custom-styles. */
 paper-listbox a, paper-menu a {
   display: block;
@@ -78,4 +85,11 @@ pre.hljs {
   padding: 10px 30px 10px 4px;
   border-left: 1px solid #ececec;
   margin-left: 20px;
+}
+
+
+/* index element card */
+.index-element-card {
+  width: 300px;
+  margin: 20px;
 }
