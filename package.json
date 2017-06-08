@@ -41,8 +41,9 @@
     "ember-cli": "^2.13.2",
     "ember-cli-app-version": "^3.0.0",
     "ember-cli-dependency-checker": "^2.0.0",
+    "ember-cli-deploy": "^1.0.0",
+    "ember-cli-deploy-git": "^1.1.1",
     "ember-cli-eslint": "^3.0.0",
-    "ember-cli-github-pages": "0.1.2",
     "ember-cli-htmlbars-inline-precompile": "^0.4.0",
     "ember-cli-inject-live-reload": "^1.4.1",
     "ember-cli-qunit": "^4.0.0",
@@ -58,8 +59,8 @@
     "ember-load-initializers": "^1.0.0",
     "ember-resolver": "^4.0.0",
     "ember-source": "^2.13.3",
-    "loader.js": "^4.2.3",
-    "greenkeeper-lockfile": "^1.4.0"
+    "greenkeeper-lockfile": "^1.4.0",
+    "loader.js": "^4.2.3"
   },
   "engines": {
     "node": ">= 4"
