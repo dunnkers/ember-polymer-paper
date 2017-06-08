@@ -1,6 +1,7 @@
-# ember-polymer-paper [![Build Status](https://travis-ci.org/dunnkers/ember-polymer-paper.svg?branch=master)](https://travis-ci.org/dunnkers/ember-polymer-paper)
+# ember-polymer-paper
+[![Build Status](https://travis-ci.org/dunnkers/ember-polymer-paper.svg?branch=master)](https://travis-ci.org/dunnkers/ember-polymer-paper)
 
-Wraps [https://elements.polymer-project.org/browse?package=paper-elements](paper-elements) in Ember Components so you can use them in Ember easily! This addon uses [https://github.com/dunnkers/ember-polymer](ember-polymer) under the hood to pull in Polymer.
+Use [Paper Elements](https://www.webcomponents.org/collection/PolymerElements/paper-elements) in your ambitious Ember Application! This addon exposes Paper Elements as Ember Components, so you can use paper elements like you use any other components. Uses [ember-polymer](https://github.com/dunnkers/ember-polymer) to pull in Polymer.
 
 ## Installation
 
@@ -22,11 +23,9 @@ Now we can use this like an ember component! Example:
 {{paper-input update=(action (mut name)) label="Your name"}}
 ```
 
-That's it! This should render something like this:
+That's it, the element should work with a two-way binding!
 
 ![Example](https://s30.postimg.org/b5jlpe041/Screen_Shot_2017_01_02_at_17_35_16.png)
-
-See the demo for more examples.
 
 ## Demo
 
