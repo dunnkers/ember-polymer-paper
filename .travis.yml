@@ -6,13 +6,11 @@ node_js:
 sudo: false
 
 cache:
+  directories:
+    - $HOME/.cache # includes bowers cache
   yarn: true
 
 env:
-  # we recommend testing LTS's and latest stable release (bonus points to beta/canary)
-  - EMBER_TRY_SCENARIO=ember-lts-2.4
-  - EMBER_TRY_SCENARIO=ember-lts-2.8
-  - EMBER_TRY_SCENARIO=ember-release
   - EMBER_TRY_SCENARIO=ember-beta
   - EMBER_TRY_SCENARIO=ember-canary
   - EMBER_TRY_SCENARIO=ember-default
@@ -25,11 +23,13 @@ matrix:
 before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
-  - yarn global add phantomjs-prebuilt
+  - yarn global add bower phantomjs-prebuilt
+  - bower --version
   - phantomjs --version
 
 install:
   - yarn install --no-lockfile
+  - bower install
 
 script:
   # Usually, it's ok to finish the test scenario without reverting
