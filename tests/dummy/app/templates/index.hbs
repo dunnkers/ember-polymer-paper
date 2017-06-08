@@ -1,16 +1,14 @@
-<h1>Welcome to ember-polymer-paper! 🦄✨</h1>
+<h2>Welcome to ember-polymer-paper! 🦄✨</h2>
 
-<div class="layout horizontal">
-  {{#each snippets.snippets as |snippet|}}
-    <paper-card heading={{snippet.name}} class="index-element-card">
-      <div class="card-content">
+{{#each snippets.snippets as |snippet|}}
+  <paper-card heading={{snippet.name}} class="index-element-card">
+    <div class="card-content">
 
-      </div>
-      <div class="card-actions">
-        {{#link-to snippet.name tabIndex="-1" class="paper-button-link"}}
-          <paper-button>Full documentation</paper-button>
-        {{/link-to}}
-      </div>
-    </paper-card>
-  {{/each}}
-</div>
+    </div>
+    <div class="card-actions">
+      {{#link-to snippet.name tabIndex="-1" class="paper-button-link"}}
+        <paper-button>Full documentation</paper-button>
+      {{/link-to}}
+    </div>
+  </paper-card>
+{{/each}}
