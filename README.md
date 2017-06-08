@@ -1,4 +1,6 @@
 # ember-polymer-paper
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/dunnkers/ember-polymer-paper.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/dunnkers/ember-polymer-paper.svg?branch=master)](https://travis-ci.org/dunnkers/ember-polymer-paper)
 
 Use [Paper Elements](https://www.webcomponents.org/collection/PolymerElements/paper-elements) in your ambitious Ember Application! This addon exposes Paper Elements as Ember Components, so you can use paper elements like you use any other components. Uses [ember-polymer](https://github.com/dunnkers/ember-polymer) to pull in Polymer.
