@@ -10,7 +10,7 @@ let IronSelector = Ember.Component.extend({
   ],
 
   selectedItem: computed({
-    get(key) {
+    get() {
       // return Ember.get(this, key);
     },
 
@@ -58,7 +58,7 @@ let IronSelector = Ember.Component.extend({
   getSelectedIndex() {
     let el = this.element;
 
-    if (!!el) {
+    if (el) {
       return typeof el.selected === 'number' ?
               el.selected :
               el.indexOf(el.selectedItem);
