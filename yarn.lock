@@ -2457,6 +2457,15 @@ ember-cli-dependency-checker@^2.0.0:
     is-git-url "^1.0.0"
     semver "^5.3.0"
 
+ember-cli-deploy-build@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-deploy-build/-/ember-cli-deploy-build-1.1.0.tgz#44ef2e09301319a1fc5807e9ec30491a753e2483"
+  dependencies:
+    chalk "^1.0.0"
+    ember-cli-deploy-plugin "^0.2.1"
+    glob "^7.1.1"
+    rsvp "^3.5.0"
+
 ember-cli-deploy-git@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ember-cli-deploy-git/-/ember-cli-deploy-git-1.1.1.tgz#bc7b080b0748ae787b7eb5cda69d34165ba5131e"
@@ -2466,7 +2475,7 @@ ember-cli-deploy-git@^1.1.1:
     ncp "^2.0.0"
     rsvp "^3.1.0"
 
-ember-cli-deploy-plugin@^0.2.0:
+ember-cli-deploy-plugin@^0.2.0, ember-cli-deploy-plugin@^0.2.1:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/ember-cli-deploy-plugin/-/ember-cli-deploy-plugin-0.2.9.tgz#a3d395b8adad7ef68d8bacdd0b0f4a61bcf9e651"
   dependencies:
@@ -6208,7 +6217,7 @@ rimraf@~2.5.0:
   dependencies:
     glob "^7.0.5"
 
-rsvp@^3.0.14, rsvp@^3.0.16, rsvp@^3.0.17, rsvp@^3.0.18, rsvp@^3.0.21, rsvp@^3.0.6, rsvp@^3.1.0, rsvp@^3.2.1, rsvp@^3.3.3, rsvp@^3.4.0:
+rsvp@^3.0.14, rsvp@^3.0.16, rsvp@^3.0.17, rsvp@^3.0.18, rsvp@^3.0.21, rsvp@^3.0.6, rsvp@^3.1.0, rsvp@^3.2.1, rsvp@^3.3.3, rsvp@^3.4.0, rsvp@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-3.5.0.tgz#a62c573a4ae4e1dfd0697ebc6242e79c681eaa34"
 
