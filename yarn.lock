@@ -2777,9 +2777,9 @@ ember-cli@^2.13.2:
     walk-sync "^0.3.0"
     yam "0.0.22"
 
-ember-code-snippet@dunnkers/ember-code-snippet:
+"ember-code-snippet@git+https://git@github.com/dunnkers/ember-code-snippet.git":
   version "1.8.1"
-  resolved "https://codeload.github.com/dunnkers/ember-code-snippet/tar.gz/8c2b6c8eaad4e587b7b6544cdf79b6a14c65a1e6"
+  resolved "git+https://git@github.com/dunnkers/ember-code-snippet.git#81661f5a28d2eb3786556bcea1a1fdedf8b678f5"
   dependencies:
     broccoli-browserify "^0.1.0"
     broccoli-flatiron "^0.0.0"

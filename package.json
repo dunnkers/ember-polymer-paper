@@ -53,7 +53,7 @@
     "ember-cli-sri": "^2.1.0",
     "ember-cli-test-loader": "^2.0.0",
     "ember-cli-uglify": "^1.2.0",
-    "ember-code-snippet": "dunnkers/ember-code-snippet",
+    "ember-code-snippet": "git+https://git@github.com/dunnkers/ember-code-snippet.git",
     "ember-data": "^2.8.0",
     "ember-disable-prototype-extensions": "^1.1.0",
     "ember-export-application-global": "^2.0.0",
