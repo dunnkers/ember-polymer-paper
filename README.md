@@ -33,6 +33,8 @@ That's it, the element should work with a two-way binding!
 
 [https://dunnkers.github.io/ember-polymer-paper/](https://dunnkers.github.io/ember-polymer-paper/)
 
+[<img width="724" alt="Demo Example" src="https://user-images.githubusercontent.com/744430/27133908-1f49e34c-5114-11e7-9cfc-481633fbe4ca.png">](https://dunnkers.github.io/ember-polymer-paper/)
+
 ## Requirements
 
 This addon forces Polymer to use Shadow DOM. Browsers that do not natively support Shadow DOM will be supplied with the [polyfill](https://github.com/webcomponents/webcomponentsjs). Note that this polyfill might result in slightly slower rendering.
