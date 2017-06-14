@@ -1,9 +1,7 @@
-<h2>Welcome to ember-polymer-paper! 🦄✨</h2>
-
 {{#each snippets.snippets as |snippet|}}
   <paper-card heading={{snippet.name}} class="index-element-card">
     <div class="card-content">
-
+      {{component (concat snippet.name '-example')}}
     </div>
     <div class="card-actions">
       {{#link-to snippet.name tabIndex="-1" class="paper-button-link"}}

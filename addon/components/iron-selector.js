@@ -15,9 +15,6 @@ let IronSelector = Ember.Component.extend({
     },
 
     set(key, value) {
-      // if (!!this.element) {
-      //   this.setBoundValue(value);
-      // }
       let idx = this.getItemIndex();
 
       if (this.getSelectedIndex() !== idx && idx !== -1) {
@@ -28,25 +25,6 @@ let IronSelector = Ember.Component.extend({
     }
   }),
 
-  // selected: computed({
-  //   get(key) {
-  //     return Ember.get(this, `_${key}`);
-  //   },
-  //
-  //   set(key, value) {
-  //     Ember.set(this, `_${key}`, value);
-  //   }
-  // }),
-  //
-  // setBoundValue(value) {
-  //   let selected = this.getSelectedIndex();
-  //   let itemIndex = this.getItemIndex(value);
-  //
-  //   if (selected !== itemIndex) {
-  //     this.element.selectIndex(itemIndex);
-  //   }
-  // },
-  //
   getItemIndex() {
     if (!!this.get('items') && !!this.get('selectedItem')) {
       return this.get('items').indexOf(this.get('selectedItem'));

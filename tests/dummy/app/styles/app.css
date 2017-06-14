@@ -92,3 +92,13 @@ pre.hljs {
   width: 300px;
   margin: 20px;
 }
+
+.index-element-card .card-content {
+  /*border-top: 1px solid #eee;*/
+  height: 70px;
+  overflow: scroll;
+}
+
+.index-element-card .card-content > div {
+  margin: 0 10px;
+}
