@@ -1,72 +1,63 @@
 <p>Block usage:</p>
+{{#element-example name="block-usage"}}
+  {{#paper-listbox items selectedItem=blockSelected as |item|}}
+    <paper-item>{{item}}</paper-item>
+  {{/paper-listbox}}
 
-{{#element-example name="block-usage" as |ex|}}
-  {{#ex.code}}
-    {{!-- BEGIN-SNIPPET block-usage --}}
-    {{#paper-listbox items selectedItem=blockSelected as |item|}}
-      <paper-item>{{item}}</paper-item>
-    {{/paper-listbox}}
-    {{!-- END-SNIPPET --}}
-  {{/ex.code}}
+  <p>Selected = {{blockSelected}}</p>
 
-  {{#ex.result}}
-    {{!-- BEGIN-SNIPPET block-usage-result --}}
-    Selected = {{blockSelected}}
-    {{!-- END-SNIPPET --}}
-  {{/ex.result}}
+  <p>Values are bound:</p>
+
+  {{#paper-listbox items selectedItem=blockSelected as |item|}}
+    <paper-item>{{item}}</paper-item>
+  {{/paper-listbox}}
 {{/element-example}}
 
-<p>Another listbox to prove the values being bound.</p>
-
-{{#paper-listbox items selectedItem=blockSelected as |item|}}
-  <paper-item>{{item}}</paper-item>
-{{/paper-listbox}}
 
 <p>Multi select:</p>
+{{#element-example name="multi"}}
+  {{paper-listbox items selectedItem=multiSelected multi=true}}
 
-{{#element-example name="multi" as |ex|}}
-  {{#ex.code}}
-    {{!-- BEGIN-SNIPPET multi --}}
-    {{paper-listbox items selectedItem=multiSelected multi=true}}
-    {{!-- END-SNIPPET --}}
-  {{/ex.code}}
-
-  {{#ex.result}}
-    {{!-- BEGIN-SNIPPET multi-result --}}
-    Selected = {{multiSelected}}
-    {{!-- END-SNIPPET --}}
-  {{/ex.result}}
+  <p>Selected = {{multiSelected}}</p>
 {{/element-example}}
 
-Non block usage:
-{{paper-listbox items selectedItem=nonBlockSelected}}
-<p>
-  Selected = {{nonBlockSelected}}
-</p>
+<p>Non block usage:</p>
+{{#element-example name="non-block"}}
+  {{paper-listbox items selectedItem=nonBlockSelected}}
+  <p>
+    Selected = {{nonBlockSelected}}
+  </p>
+{{/element-example}}
 
-Without a positional param:
-{{#paper-listbox selectedItem=noPositionalSelected}}
-  <paper-item>Item 1</paper-item>
-  <paper-item>Item 2</paper-item>
-  <paper-item>Item 3</paper-item>
-{{/paper-listbox}}
-<p>
-  Selected = {{noPositionalSelected}}
-</p>
+<p>Without a positional param:</p>
+{{#element-example name="no-positional"}}
+  {{#paper-listbox selectedItem=noPositionalSelected}}
+    <paper-item>Item 1</paper-item>
+    <paper-item>Item 2</paper-item>
+    <paper-item>Item 3</paper-item>
+  {{/paper-listbox}}
+  <p>
+    Selected = {{noPositionalSelected}}
+  </p>
+{{/element-example}}
 
-With other attribute:
-{{#paper-listbox selectedItem=withNameAttribute selected="b"
-  attrForSelected="name"}}
-  <paper-item name="a">Item a</paper-item>
-  <paper-item name="b">Item b</paper-item>
-  <paper-item name="c">Item c</paper-item>
-{{/paper-listbox}}
-<p>
-  Selected = {{withNameAttribute}}
-</p>
+<p>With other attribute:</p>
+{{#element-example name="other-attribute"}}
+  {{#paper-listbox selectedItem=withNameAttribute selected="b"
+    attrForSelected="name"}}
+    <paper-item name="a">Item a</paper-item>
+    <paper-item name="b">Item b</paper-item>
+    <paper-item name="c">Item c</paper-item>
+  {{/paper-listbox}}
+  <p>
+    Selected = {{withNameAttribute}}
+  </p>
+{{/element-example}}
 
-Using just index:
-{{paper-listbox items selected=selectedAnimal}}
-<p>
-  Selected = {{selectedAnimal}}
-</p>
+<p>Using just index:</p>
+{{#element-example name="other-attribute"}}
+  {{paper-listbox items selected=selectedAnimal}}
+  <p>
+    Selected = {{selectedAnimal}}
+  </p>
+{{/element-example}}

@@ -1,41 +1,29 @@
-{{#element-example name="drivers-license" as |ex|}}
-  {{#ex.code}}
-    {{!-- BEGIN-SNIPPET drivers-license --}}
-    {{#paper-checkbox update=(action (mut hasLicense))}}
+{{#element-example name="drivers-license"}}
+  {{#paper-checkbox update=(action (mut hasLicense))}}
     I have a drivers license
-    {{/paper-checkbox}}
-    {{!-- END-SNIPPET --}}
-  {{/ex.code}}
+  {{/paper-checkbox}}
 
-  {{#ex.result}}
-    {{!-- BEGIN-SNIPPET drivers-license-result --}}
+  <p>
     {{#if hasLicense}}
-      You may drive 🚗
+    You may drive 🚗
     {{else}}
-      No hitting the roads for you yet mate! 🚧
+    No hitting the roads for you yet mate! 🚧
     {{/if}}
-    {{!-- END-SNIPPET --}}
-  {{/ex.result}}
+  </p>
 {{/element-example}}
 
 <p>We could also use a traditional two-way binding.</p>
 
-{{#element-example name="is-adult" as |ex|}}
-  {{#ex.code}}
-    {{!-- BEGIN-SNIPPET is-adult --}}
-    {{#paper-checkbox checked=isAdult}}
+{{#element-example name="is-adult"}}
+  {{#paper-checkbox checked=isAdult}}
     I am above eighteen
-    {{/paper-checkbox}}
-    {{!-- END-SNIPPET --}}
-  {{/ex.code}}
+  {{/paper-checkbox}}
 
-  {{#ex.result}}
-    {{!-- BEGIN-SNIPPET is-adult-result --}}
+  <p>
     {{#if isAdult}}
-      You may drink alcohol (in Europe)
+    You may drink alcohol (in Europe)
     {{else}}
-      You're too young for alcohol!
+    You're too young for alcohol!
     {{/if}}
-    {{!-- END-SNIPPET --}}
-  {{/ex.result}}
+  </p>
 {{/element-example}}

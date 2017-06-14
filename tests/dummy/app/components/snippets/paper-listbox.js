@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   // BEGIN-SNIPPET block-usage
   items: [ 'Dog', 'Cat', 'Elephant', 'Giraffe' ],
   blockSelected: 'Cat',
-  // END-SNIPPET block-usage
+  // END-SNIPPET
 
   selectedAnimal: 2
 });

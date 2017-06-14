@@ -1,17 +1,20 @@
-{{#paper-toggle-button update=(action (mut toggled))}}
-Toggle
-{{/paper-toggle-button}}
+{{#element-example name="toggled"}}
+  {{#paper-toggle-button update=(action (mut toggled))}}
+  Toggle
+  {{/paper-toggle-button}}
 
-<p>
-  Toggled: {{toggled}}
-</p>
+  <p>
+    Toggled: {{toggled}}
+  </p>
+{{/element-example}}
 
 <p>We could also use a traditional two-way binding.</p>
+{{#element-example name="onoff"}}
+  {{#paper-toggle-button checked=onoff}}
+  On/Off
+  {{/paper-toggle-button}}
 
-{{#paper-toggle-button checked=onoff}}
-On/Off
-{{/paper-toggle-button}}
-
-<p>
-  On: {{onoff}}
-</p>
+  <p>
+    On: {{onoff}}
+  </p>
+{{/element-example}}

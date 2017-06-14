@@ -1,24 +1,31 @@
-{{paper-input label="Your name" value=name minlength=3
-  auto-validate=true error-message="More than 3 characters required!"
-  update=(action (mut name))}}
+<p>Use paper-input with text or numbers:</p>
+{{#element-example name="name-age"}}
+  {{paper-input label="Your name" value=name minlength=3
+    auto-validate=true error-message="More than 3 characters required!"
+    update=(action (mut name))}}
 
-{{paper-input type="number" label="Your age" value=age min=0 max=120}}
+  {{paper-input type="number" label="Your age" value=age min=0 max=120}}
 
-<p>
-  Hey, my name is {{name}} and I'm {{age}} years old!
-</p>
+  <p>
+    Hey, my name is {{name}} and I'm {{age}} years old!
+  </p>
+{{/element-example}}
 
 
-<p>
-  With a pre-set value:
-</p>
-{{paper-input label="Name" value=presetName}}
+<p>You can also use classic two-way binding instead of using DDAU's
+  update function.</p>
+{{#element-example name="name-age"}}
+  <p>
+    With a pre-set value:
+  </p>
+  {{paper-input label="Name" value=presetName}}
 
-<p>
-  Name: {{presetName}}
-</p>
+  <p>
+    Name: {{presetName}}
+  </p>
 
-<p>
-  Data down:
-  {{input value=presetName}}
-</p>
+  <p>
+    Data down:
+    {{input value=presetName}}
+  </p>
+{{/element-example}}

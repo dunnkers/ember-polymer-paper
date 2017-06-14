@@ -1,13 +1,16 @@
-{{paper-slider update=(action (mut brightness))}}
+{{#element-example name="brightness"}}
+  {{paper-slider update=(action (mut brightness))}}
 
-<p>
-  Brightness: {{brightness}}
-</p>
+  <p>
+    Brightness: {{brightness}}
+  </p>
+{{/element-example}}
 
 <p>We could also use a traditional two-way binding.</p>
+{{#element-example name="brightness2"}}
+  {{paper-slider value=brightness2}}
 
-{{paper-slider value=brightness2}}
-
-<p>
-  Brightness: {{brightness2}}
-</p>
+  <p>
+    Brightness: {{brightness2}}
+  </p>
+{{/element-example}}

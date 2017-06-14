@@ -1,16 +1,20 @@
-{{paper-radio-group items selectedItem=number}}
+{{#element-example name="items"}}
+  {{paper-radio-group items selectedItem=number}}
 
-<p>
-  Selected: {{number}}
-</p>
+  <p>
+    Selected: {{number}}
+  </p>
+{{/element-example}}
 
-Or a more complicated object:
-{{#paper-radio-group people selectedItem=person as |person|}}
-  {{#paper-radio-button name=person.name}}
-    {{person.name}}
-  {{/paper-radio-button}}
-{{/paper-radio-group}}
+<p>Or a more complicated object:</p>
+{{#element-example name="people"}}
+  {{#paper-radio-group people selectedItem=person as |person|}}
+    {{#paper-radio-button name=person.name}}
+      {{person.name}}
+    {{/paper-radio-button}}
+  {{/paper-radio-group}}
 
-<p>
-  Name: {{person.name}}, Age: {{person.age}}
-</p>
+  <p>
+    Name: {{person.name}}, Age: {{person.age}}
+  </p>
+{{/element-example}}

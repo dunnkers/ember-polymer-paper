@@ -1,17 +1,20 @@
-{{#paper-radio-button update=(action (mut checked))}}
-Toggle this
-{{/paper-radio-button}}
+{{#element-example name="toggle"}}
+  {{#paper-radio-button update=(action (mut checked))}}
+  Toggle this
+  {{/paper-radio-button}}
 
-<p>
-  Toggled: {{checked}}
-</p>
+  <p>
+    Toggled: {{checked}}
+  </p>
+{{/element-example}}
 
 <p>We could also use a traditional two-way binding.</p>
+{{#element-example name="traditional-binding"}}
+  {{#paper-radio-button checked=checked2}}
+  Toggle this
+  {{/paper-radio-button}}
 
-{{#paper-radio-button checked=checked2}}
-Toggle this
-{{/paper-radio-button}}
-
-<p>
-  Toggled: {{checked2}}
-</p>
+  <p>
+    Toggled: {{checked2}}
+  </p>
+{{/element-example}}

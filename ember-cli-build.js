@@ -11,10 +11,12 @@ module.exports = function(defaults) {
         stripExcludes: ['.*paper-styles\.html.*']
       }
     },
+    // pull in these snippet to dynamically construct the page
     'snippetPaths': [
       path.join(appDir, 'templates', 'components', 'snippets'),
       path.join(appDir, 'components', 'snippets')
     ],
+    // actual snippets
     'snippetSearchPaths': [ appDir ],
     'snippetRegexes': {
       begin: /{{#element-example\sname=\"(\S+)\"/,

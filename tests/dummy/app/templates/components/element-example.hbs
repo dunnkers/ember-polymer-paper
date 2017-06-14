@@ -1,15 +1,11 @@
 <section class="element-example-display">
-  {{yield (hash
-    code=(component 'element-example-code')
-    result=(component 'element-example-result')
-  )}}
+  {{yield}}
 </section>
 
 <div class="divider paper-font-caption">Handlebars</div>
 
 <section class="element-example-snippet">
   {{code-snippet name=(concat name '.hbs')}}
-  {{code-snippet name=(concat name '-result.hbs')}}
 
   <div class="divider paper-font-caption">Javascript</div>
 
