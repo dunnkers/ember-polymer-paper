@@ -15,7 +15,11 @@ module.exports = function(defaults) {
       path.join(appDir, 'templates', 'components', 'snippets'),
       path.join(appDir, 'components', 'snippets')
     ],
-    'snippetSearchPaths': [ appDir ]
+    'snippetSearchPaths': [ appDir ],
+    'snippetRegexes': {
+      begin: /{{#element-example\sname=\"(\S+)\"/,
+      end: /{{\/element-example}}/,
+    }
   });
 
   app.import('bower_components/highlightjs/styles/github.css');
