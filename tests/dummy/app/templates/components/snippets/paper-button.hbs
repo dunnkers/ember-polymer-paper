@@ -1,0 +1,13 @@
+{{#element-example name="sign-in"}}
+  {{#paper-button click=(action "signIn")}}
+    Sign in
+  {{/paper-button}}
+
+  <p>
+    {{#if signedIn}}
+      Welcome!
+    {{else}}
+      You are not signed in.
+    {{/if}}
+  </p>
+{{/element-example}}
