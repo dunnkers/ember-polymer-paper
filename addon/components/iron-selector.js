@@ -19,7 +19,7 @@ let IronSelector = Ember.Component.extend({
       if (items) {
         idx = this.get('items').indexOf(value);
       } else {
-        Logger.error('Not supported yet ⛔️');
+        // Logger.error('Not supported yet ⛔️');
       }
 
       if (this.getSelectedIndex() !== idx && idx !== -1) {
