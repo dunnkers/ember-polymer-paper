@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   items: [ 'Dog', 'Cat', 'Elephant', 'Giraffe' ],
   blockSelected: 'Cat',
   // END-SNIPPET
-
+  // BEGIN-SNIPPET just-index
   selectedAnimal: 2
+  // END-SNIPPET
 });

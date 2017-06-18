@@ -1,5 +1,5 @@
 import Ember from 'ember';
-const { computed } = Ember;
+const { computed, Logger } = Ember;
 
 let IronSelector = Ember.Component.extend({
   attributeBindings: [
@@ -10,36 +10,33 @@ let IronSelector = Ember.Component.extend({
   ],
 
   selectedItem: computed({
-    get() {
-      // return Ember.get(this, key);
-    },
+    get() {},
 
     set(key, value) {
-      let idx = this.getItemIndex();
+      let items = this.get('items');
+      let idx = -1;
+
+      if (items) {
+        idx = this.get('items').indexOf(value);
+      } else {
+        Logger.error('Not supported yet ⛔️');
+      }
 
       if (this.getSelectedIndex() !== idx && idx !== -1) {
-        Ember.set(this, 'selected', idx);
+        this.set('selected', idx);
       }
 
       return value;
     }
   }),
 
-  getItemIndex() {
-    if (!!this.get('items') && !!this.get('selectedItem')) {
-      return this.get('items').indexOf(this.get('selectedItem'));
-    } else {
-      return -1;
-    }
-  },
-
   getSelectedIndex() {
     let el = this.element;
 
     if (el) {
       return typeof el.selected === 'number' ?
-              el.selected :
-              el.indexOf(el.selectedItem);
+                    el.selected :
+                    el.indexOf(el.selectedItem);
     } else {
       return -1;
     }
@@ -51,19 +48,28 @@ let IronSelector = Ember.Component.extend({
     this.$().on('iron-select', () => {
       let el = this.element;
       let items = this.get('items');
-      let selectedItem = el.selected;
 
       if (items) {
-        selectedItem = items[this.getSelectedIndex()];
+        this.set('selectedItem', items[this.getSelectedIndex()]);
+      } else {
+        this.set('selectedItem', el.selected);
       }
-
-      this.set('selectedItem', selectedItem);
     });
 
     // initial selection
-    if (!!this.get('items') && !!this.get('selectedItem')) {
-      let idx = this.get('items').indexOf(this.get('selectedItem'));
-      Ember.set(this, 'selected', idx);
+    let selectedItem = this.get('selectedItem');
+    if (selectedItem) {
+      let items = this.get('items');
+
+      if (items) {
+        this.element.select(selectedItem === 'number' ?
+                            selectedItem :
+                            items.indexOf(selectedItem));
+      } else {
+        this.element.select(selectedItem === 'number' ?
+                            selectedItem :
+                            this.element.items.indexOf(selectedItem));
+      }
     }
   }
 });
