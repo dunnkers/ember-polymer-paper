@@ -21,6 +21,10 @@ module.exports = function(defaults) {
     'snippetRegexes': {
       begin: /{{#element-example\sname=\"(\S+)\"/,
       end: /{{\/element-example}}/,
+    },
+    // inline sourcemaps for VSCode debugging
+    'babel': {
+      sourceMaps: 'inline'
     }
   });
 
