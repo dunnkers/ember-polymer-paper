@@ -2,12 +2,16 @@
   {{yield}}
 </section>
 
-<div class="divider paper-font-caption">Handlebars</div>
-
 <section class="element-example-snippet">
+  <div class="divider">
+    <span class="paper-font-caption type">Handlebars</span>
+  </div>
   {{code-snippet name=(concat name '.hbs')}}
 
-  <div class="divider paper-font-caption">Javascript</div>
-
-  {{code-snippet name=(concat name '.js')}}
+  {{#if hasJS}}
+    <div class="divider">
+      <span class="paper-font-caption type">Javascript</span>
+    </div>
+    {{code-snippet name=(concat name '.js')}}
+  {{/if}}
 </section>
