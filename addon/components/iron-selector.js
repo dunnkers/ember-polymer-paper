@@ -1,5 +1,5 @@
 import Ember from 'ember';
-const { computed, Logger } = Ember;
+const { computed } = Ember;
 
 let IronSelector = Ember.Component.extend({
   attributeBindings: [
@@ -18,8 +18,6 @@ let IronSelector = Ember.Component.extend({
 
       if (items) {
         idx = this.get('items').indexOf(value);
-      } else {
-        // Logger.error('Not supported yet ⛔️');
       }
 
       if (this.getSelectedIndex() !== idx && idx !== -1) {
