@@ -8,7 +8,7 @@ module.exports = function(defaults) {
   var app = new EmberAddon(defaults, {
     'ember-polymer': {
       htmlImportsFile: path.join(appDir, 'elements.html'),
-      vulcanizeOptions: {
+      bundlerOptions: {
         stripExcludes: ['.*paper-styles\.html.*']
       }
     },
