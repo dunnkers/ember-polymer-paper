@@ -1,4 +1,3 @@
-/* eslint-env node */
 'use strict';
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 const path = require('path');
@@ -9,7 +8,7 @@ module.exports = function(defaults) {
     'ember-polymer': {
       htmlImportsFile: path.join(appDir, 'elements.html'),
       bundlerOptions: {
-        stripExcludes: ['.*paper-styles\.html.*']
+        stripExcludes: ['.*paper-styles.html.*']
       }
     },
     // pull in these snippet to dynamically construct the page
