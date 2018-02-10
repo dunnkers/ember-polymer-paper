@@ -1,8 +1,8 @@
 {
   "name": "ember-polymer-paper",
   "dependencies": {
-    "polymer": "^2.0.0",
-    "webcomponentsjs": "^1.0.0",
+    "polymer": "^2.3.1",
+    "webcomponentsjs": "^1.0.22",
     "highlightjs": "^9.7.0",
     "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
     "iron-icons": "PolymerElements/iron-icons#^2.0.0",
