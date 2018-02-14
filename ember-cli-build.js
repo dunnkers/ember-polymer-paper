@@ -9,7 +9,7 @@ module.exports = function(defaults) {
     'ember-polymer': {
       htmlImportsFile: path.join(appDir, 'elements.html'),
       bundlerOptions: {
-        stripExcludes: ['.*paper-styles\.html.*']
+        stripExcludes: ['.*paper-styles.html.*']
       }
     },
     // pull in these snippet to dynamically construct the page
@@ -20,7 +20,7 @@ module.exports = function(defaults) {
     // actual snippets
     'snippetSearchPaths': [ appDir ],
     'snippetRegexes': {
-      begin: /{{#element-example\sname=\"(\S+)\"/,
+      begin: /{{#element-example\sname="(\S+)"/,
       end: /{{\/element-example}}/,
     },
     // inline sourcemaps for VSCode debugging
