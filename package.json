@@ -36,7 +36,7 @@
     "ember-cli-babel": "^6.11.0",
     "ember-cli-htmlbars": "^2.0.3",
     "ember-polymer": "^2.0.5",
-    "snyk": "^1.316.1"
+    "snyk": "^1.518.0"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.6.0",
